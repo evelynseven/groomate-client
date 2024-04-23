@@ -40,10 +40,10 @@ const AdminLayout = ({ children }: Props) => {
     { type: "divider" },
 
     getItem("Settings", "settings", <SettingOutlined />, [
-      getItem("Services", "services"),
-      getItem("Add-ons", "addons"),
-      getItem("Breeds", "breeds"),
-      getItem("Users", "users"),
+      getItem("Services", "settings/services"),
+      getItem("Add-ons", "settings/addons"),
+      getItem("Breeds", "settings/breeds"),
+      getItem("Users", "settings/users"),
     ]),
   ];
 

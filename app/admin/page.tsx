@@ -1,8 +1,8 @@
 import React from "react";
-import CustomersPage from "./customers/page";
+import Dashboard from "./dashboard/page";
 
 const AdminPage = () => {
-  return <div></div>;
+  return <Dashboard />;
 };
 
 export default AdminPage;
