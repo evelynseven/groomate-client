@@ -34,6 +34,7 @@ const CustomersPage = () => {
       title: "Remarks",
       dataIndex: "remarks",
       key: "remarks",
+      render: (text: string) => <a>{text ? text : "--"}</a>,
     },
   ];
 
