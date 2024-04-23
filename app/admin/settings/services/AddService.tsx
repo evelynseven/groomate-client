@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
-import { postData } from "../../api/api";
-import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
+import { postData } from "@/app/api/api";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Space,
+} from "antd";
 
 interface AddDrawerProps {
   onClose: () => void;
@@ -23,8 +32,7 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ onClose }) => {
     form
       .validateFields()
       .then(async (values) => {
-        values.phoneNumber = `+1${values.phoneNumber}`;
-        postData("customers", values);
+        postData("services", values);
         closeDrawer();
       })
       .catch((err) => {
@@ -34,22 +42,13 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ onClose }) => {
 
   const [form] = Form.useForm();
 
-  const { Option } = Select;
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="+1">+1</Option>
-      </Select>
-    </Form.Item>
-  );
-
   return (
     <>
       <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
         New
       </Button>
       <Drawer
-        title="Create a new customer"
+        title="Create a new service"
         width={720}
         onClose={closeDrawer}
         open={open}
@@ -67,28 +66,27 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ onClose }) => {
           </Space>
         }
       >
-        <Form layout="vertical" form={form} initialValues={{ prefix: "+1" }}>
+        <Form layout="vertical" form={form}>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="firstName"
-                label="First Name"
-                rules={[{ required: true, message: "Please enter first name" }]}
+                name="name"
+                label="Name"
+                rules={[{ required: true, message: "Please enter name" }]}
               >
-                <Input
-                  placeholder="Please enter first name"
-                  autoComplete="off"
-                />
+                <Input placeholder="Please enter name" autoComplete="off" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="lastName"
-                label="Last Name"
-                rules={[{ required: true, message: "Please enter last name" }]}
+                name="nameAbbrev"
+                label="Abbreviation"
+                rules={[
+                  { required: true, message: "Please enter abbreviation" },
+                ]}
               >
                 <Input
-                  placeholder="Please enter last name"
+                  placeholder="Please enter abbreviation"
                   autoComplete="off"
                 />
               </Form.Item>
@@ -97,28 +95,13 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ onClose }) => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="phoneNumber"
-                label="Phone Number"
+                name="basePrice"
+                label="Base Price (CAD)"
                 rules={[
-                  {
-                    required: true,
-                    message: "Please enter your phone number",
-                  },
+                  { required: true, message: "Please enter Base Price (CAD)" },
                 ]}
               >
-                <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: "Please enter email" }]}
-              >
-                <Input
-                  placeholder="Please enter last name"
-                  autoComplete="off"
-                />
+                <InputNumber />
               </Form.Item>
             </Col>
           </Row>

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import GenericTable from "@/app/components/GenericTable";
 import { fetchData } from "@/app/api/api";
 import { Space } from "antd";
+import AddService from "./AddService";
 
 interface Service {
   id: string;
@@ -56,10 +57,22 @@ const ServicesPage = () => {
     getServices();
   }, []);
 
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+  const handleDrawerClose = () => {
+    setShouldRefresh(true);
+  };
+
   return (
     <>
-      <TableHeader PageName="Services" />
-      <GenericTable<Service> dataType={services} columns={columns} />
+      <div className="mb-4 flex justify-between">
+        <TableHeader PageName="Services" />
+        <AddService onClose={handleDrawerClose} />
+      </div>
+      <GenericTable<Service>
+        dataType={services}
+        columns={columns}
+        shouldRefresh={shouldRefresh}
+      />
     </>
   );
 };
