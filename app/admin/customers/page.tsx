@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { fetchData } from "../../api/api";
 import GenericTable from "@/app/components/GenericTable";
 import TableHeader from "@/app/components/TableHeader";
+import AddCustomer from "./AddCustomer";
 
 interface Customer {
   fullName: string;
@@ -51,7 +52,10 @@ const CustomersPage = () => {
 
   return (
     <>
-      <TableHeader PageName="Customers" />
+      <div className="mb-4 flex justify-between">
+        <TableHeader PageName="Customers" />
+        <AddCustomer />
+      </div>
       <GenericTable<Customer> dataType={customers} columns={columns} />
     </>
   );
