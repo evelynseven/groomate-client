@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { postData, putData } from "@/app/api/api";
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Space } from "antd";
+import SearchSelect from "./SearchSelect";
+import CascadeSelect from "./CascadeSelect";
 
 interface Props {
   openStatus: boolean;
@@ -8,6 +10,14 @@ interface Props {
   getAppointments: () => void;
   drawerType?: string;
   fieldsValue: object;
+}
+
+interface User {
+  id: string;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  remarks: string;
 }
 
 const EditDrawer: React.FC<Props> = ({
@@ -31,10 +41,12 @@ const EditDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        postData("appointments", values).then(() => {
-          closeDrawer();
-          getAppointments();
-        });
+        console.log(values);
+
+        // postData("appointments", values).then(() => {
+        //   closeDrawer();
+        //   getAppointments();
+        // });
       })
       .catch((err) => {
         console.error(err);
@@ -86,11 +98,29 @@ const EditDrawer: React.FC<Props> = ({
       >
         <Form layout="vertical" form={form}>
           <Row gutter={16}>
-            <Col span={12}></Col>
+            <Col span={12}>
+              <Form.Item
+                // name="customer"
+                label="Customer and Pet"
+                rules={[
+                  { required: true, message: "Please select customer and pet" },
+                ]}
+              >
+                <CascadeSelect />
+              </Form.Item>
+            </Col>
             <Col span={12}></Col>
           </Row>
           <Row gutter={16}>
-            <Col span={12}></Col>
+            <Col span={12}>
+              <Form.Item
+                // name="associate"
+                label="Associate"
+                rules={[{ required: true, message: "Please select associate" }]}
+              >
+                <SearchSelect<User> endpoint="users" />
+              </Form.Item>
+            </Col>
             <Col span={12}>
               <Form.Item
                 name="appointmentTime"

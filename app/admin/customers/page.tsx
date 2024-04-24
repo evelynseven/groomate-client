@@ -9,6 +9,7 @@ import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 interface Customer {
+  id: string;
   fullName: string;
   phoneNumber: string;
   email: string;

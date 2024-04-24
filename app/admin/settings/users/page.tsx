@@ -9,6 +9,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import EditUser from "./EditUser";
 
 interface User {
+  id: string;
   fullName: string;
   phoneNumber: string;
   email: string;
