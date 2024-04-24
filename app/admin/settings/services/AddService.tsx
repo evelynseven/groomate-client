@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { postData } from "@/app/api/api";
 import {
   Button,
@@ -15,13 +15,19 @@ interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
   drawerType?: string;
+  fieldsValue?: object;
 }
 
 const AddDrawer: React.FC<Props> = ({
   openStatus,
   closeDrawer,
   drawerType,
+  fieldsValue,
 }) => {
+  const [form] = Form.useForm();
+
+  form.setFieldsValue(fieldsValue);
+
   const submitHandler = () => {
     form
       .validateFields()
@@ -34,11 +40,10 @@ const AddDrawer: React.FC<Props> = ({
       });
   };
 
-  const [form] = Form.useForm();
-
   return (
     <>
       <Drawer
+        destroyOnClose
         title={drawerType}
         width={720}
         onClose={closeDrawer}

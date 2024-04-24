@@ -41,9 +41,14 @@ const ServicesPage = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (_text: string, record: Service) => (
         <Space size="middle">
-          <a onClick={editBtnHandler} className="text-blue-500">
+          <a
+            onClick={() => {
+              editBtnHandler(record);
+            }}
+            className="text-blue-500"
+          >
             Edit
           </a>
         </Space>
@@ -64,6 +69,8 @@ const ServicesPage = () => {
   const [openStatus, setOpenStatus] = useState(false);
   //control the title of the drawer
   const [drawerType, setDrawerType] = useState("");
+  //control the fields value of the drawer
+  const [fieldsValue, setFieldsValue] = useState({});
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -78,8 +85,9 @@ const ServicesPage = () => {
     showDrawer();
   };
 
-  const editBtnHandler = () => {
+  const editBtnHandler = (record: Service) => {
     setDrawerType("Edit service information");
+    setFieldsValue(record);
     showDrawer();
   };
 
@@ -94,6 +102,7 @@ const ServicesPage = () => {
           openStatus={openStatus}
           closeDrawer={closeDrawer}
           drawerType={drawerType}
+          fieldsValue={fieldsValue}
         />
       </div>
       <GenericTable<Service> dataSource={services} columns={columns} />
