@@ -3,6 +3,9 @@ import TableHeader from "@/app/components/TableHeader";
 import React, { useEffect, useState } from "react";
 import GenericTable from "@/app/components/GenericTable";
 import { fetchData } from "@/app/api/api";
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import EditAppointment from "./EditAppointment";
 
 interface Appointment {
   id: string;
@@ -72,18 +75,63 @@ const AppointmentsPage = () => {
     },
   ];
 
+  //control the table data
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  useEffect(() => {
-    const getAppointments = async () => {
+  //control the opening of the drawer
+  const [openStatus, setOpenStatus] = useState(false);
+  //control the title of the drawer
+  const [drawerType, setDrawerType] = useState("");
+  //control the fields value of the drawer
+  const [fieldsValue, setFieldsValue] = useState({});
+
+  const getAppointments = async () => {
+    try {
       const appointments: Array<Appointment> = await fetchData("appointments");
       setAppointments(appointments.map((item) => ({ ...item, key: item.id })));
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
     getAppointments();
   }, []);
 
+  const showDrawer = () => {
+    setOpenStatus(true);
+  };
+
+  const closeDrawer = () => {
+    setOpenStatus(false);
+  };
+
+  const addBtnHandler = () => {
+    setDrawerType("Create");
+    setFieldsValue({});
+    showDrawer();
+  };
+
+  const editBtnHandler = (record: Appointment) => {
+    setDrawerType("Edit");
+    setFieldsValue(record);
+    showDrawer();
+  };
+
   return (
     <>
-      <TableHeader PageName="Appointments" />
+      <div className="mb-4 flex justify-between">
+        <TableHeader PageName="Appointments" />
+        <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
+          New
+        </Button>
+        <EditAppointment
+          openStatus={openStatus}
+          closeDrawer={closeDrawer}
+          getAppointments={getAppointments}
+          drawerType={drawerType}
+          fieldsValue={fieldsValue}
+        />
+      </div>
       <GenericTable<Appointment> dataSource={appointments} columns={columns} />
     </>
   );

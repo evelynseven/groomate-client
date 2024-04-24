@@ -58,7 +58,6 @@ const BreedsPage = () => {
 
   //control the table data
   const [breeds, setBreeds] = useState<Breed[]>([]);
-
   //control the opening of the drawer
   const [openStatus, setOpenStatus] = useState(false);
   //control the title of the drawer
