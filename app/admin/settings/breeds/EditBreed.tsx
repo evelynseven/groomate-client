@@ -1,11 +1,21 @@
 import React, { useEffect } from "react";
-import { postData, putData } from "../../api/api";
-import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
+import { postData, putData } from "@/app/api/api";
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  Space,
+} from "antd";
 
 interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
-  getCustomers: () => void;
+  getBreeds: () => void;
   drawerType?: string;
   fieldsValue: object;
 }
@@ -13,19 +23,12 @@ interface Props {
 const EditDrawer: React.FC<Props> = ({
   openStatus,
   closeDrawer,
-  getCustomers,
+  getBreeds,
   drawerType,
   fieldsValue,
 }) => {
-  const { Option } = Select;
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="+1">+1</Option>
-      </Select>
-    </Form.Item>
-  );
   const [form] = Form.useForm();
+  const { Option } = Select;
 
   useEffect(() => {
     if (Object.keys(fieldsValue).length === 0) {
@@ -38,10 +41,9 @@ const EditDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        values.phoneNumber = `+1${values.phoneNumber}`;
-        postData("customers", values).then(() => {
+        postData("breeds", values).then(() => {
           closeDrawer();
-          getCustomers();
+          getBreeds();
         });
       })
       .catch((err) => {
@@ -54,9 +56,9 @@ const EditDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         if (fieldsValue && "id" in fieldsValue) {
-          putData(`customers/${fieldsValue.id}`, values).then(() => {
+          putData(`breeds/${fieldsValue.id}`, values).then(() => {
             closeDrawer();
-            getCustomers();
+            getBreeds();
           });
         } else {
           console.error("ID not found in fieldsValue");
@@ -70,7 +72,8 @@ const EditDrawer: React.FC<Props> = ({
   return (
     <>
       <Drawer
-        title="Create a new customer"
+        destroyOnClose
+        title={`${drawerType} Breed`}
         width={720}
         onClose={closeDrawer}
         open={openStatus}
@@ -91,58 +94,42 @@ const EditDrawer: React.FC<Props> = ({
           </Space>
         }
       >
-        <Form layout="vertical" form={form} initialValues={{ prefix: "+1" }}>
+        <Form layout="vertical" form={form}>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="firstName"
-                label="First Name"
-                rules={[{ required: true, message: "Please enter first name" }]}
+                name="name"
+                label="Name"
+                rules={[{ required: true, message: "Please enter name" }]}
               >
-                <Input
-                  placeholder="Please enter first name"
-                  autoComplete="off"
-                />
+                <Input placeholder="Please enter name" autoComplete="off" />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="lastName"
-                label="Last Name"
-                rules={[{ required: true, message: "Please enter last name" }]}
+                name="type"
+                label="Breed Type"
+                rules={[
+                  { required: true, message: "Please select breed type" },
+                ]}
               >
-                <Input
-                  placeholder="Please enter last name"
-                  autoComplete="off"
-                />
+                <Select placeholder="Please select breed type">
+                  <Option value="DOG">Dog</Option>
+                  <Option value="CAT">Cat</Option>
+                </Select>
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="phoneNumber"
-                label="Phone Number"
+                name="coefficient"
+                label="Coefficient"
                 rules={[
-                  {
-                    required: true,
-                    message: "Please enter your phone number",
-                  },
+                  { required: true, message: "Please enter coefficient" },
                 ]}
               >
-                <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: "Please enter email" }]}
-              >
-                <Input
-                  placeholder="Please enter last name"
-                  autoComplete="off"
-                />
+                <InputNumber step="0.1" />
               </Form.Item>
             </Col>
           </Row>
