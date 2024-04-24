@@ -81,12 +81,12 @@ const ServicesPage = () => {
   };
 
   const addBtnHandler = () => {
-    setDrawerType("Create a new service");
+    setDrawerType("Create");
     showDrawer();
   };
 
   const editBtnHandler = (record: Service) => {
-    setDrawerType("Edit service information");
+    setDrawerType("Edit");
     setFieldsValue(record);
     showDrawer();
   };

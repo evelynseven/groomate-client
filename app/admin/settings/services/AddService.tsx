@@ -1,5 +1,5 @@
-import React from "react";
-import { postData } from "@/app/api/api";
+import React, { useEffect } from "react";
+import { postData, putData } from "@/app/api/api";
 import {
   Button,
   Col,
@@ -15,7 +15,7 @@ interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
   drawerType?: string;
-  fieldsValue?: object;
+  fieldsValue: object;
 }
 
 const AddDrawer: React.FC<Props> = ({
@@ -26,9 +26,13 @@ const AddDrawer: React.FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
 
-  form.setFieldsValue(fieldsValue);
+  useEffect(() => {
+    if (fieldsValue) {
+      form.setFieldsValue(fieldsValue);
+    }
+  }, [fieldsValue]);
 
-  const submitHandler = () => {
+  const createHandler = () => {
     form
       .validateFields()
       .then(async (values) => {
@@ -40,11 +44,27 @@ const AddDrawer: React.FC<Props> = ({
       });
   };
 
+  const editHandler = () => {
+    form
+      .validateFields()
+      .then(async (values) => {
+        if ("id" in fieldsValue) {
+          putData(`services/${fieldsValue.id}`, values);
+          closeDrawer();
+        } else {
+          console.error("ID not found in fieldsValue");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <>
       <Drawer
         destroyOnClose
-        title={drawerType}
+        title={`${drawerType} Service`}
         width={720}
         onClose={closeDrawer}
         open={openStatus}
@@ -56,7 +76,10 @@ const AddDrawer: React.FC<Props> = ({
         extra={
           <Space>
             <Button onClick={closeDrawer}>Cancel</Button>
-            <Button onClick={submitHandler} type="primary">
+            <Button
+              onClick={drawerType === "Create" ? createHandler : editHandler}
+              type="primary"
+            >
               Submit
             </Button>
           </Space>

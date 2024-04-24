@@ -19,7 +19,19 @@ const postData = async (endpoint: string, data: object) => {
     const response = await axios.post(`${baseUrl}/${endpoint}`, data);
     const item = await response.data;
     return item;
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 };
 
-export { fetchData, postData };
+const putData = async (endpoint: string, data: object) => {
+  try {
+    const response = await axios.put(`${baseUrl}/${endpoint}`, data);
+    const item = await response.data;
+    return item;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { fetchData, postData, putData };
