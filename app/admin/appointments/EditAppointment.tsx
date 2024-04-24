@@ -88,8 +88,6 @@ const EditDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async () => {
-        console.log(newAppointment);
-
         postData(
           `customers/${newAppointment.customerId}/appointments`,
           newAppointment
