@@ -71,7 +71,7 @@ const EditDrawer: React.FC<Props> = ({
     <>
       <Drawer
         destroyOnClose
-        title={`${drawerType} Service`}
+        title={`${drawerType} Addon`}
         width={720}
         onClose={closeDrawer}
         open={openStatus}
