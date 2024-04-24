@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
 import { postData } from "@/app/api/api";
 import {
   Button,
@@ -12,17 +11,17 @@ import {
   Space,
 } from "antd";
 
-const AddDrawer: React.FC = () => {
-  const [open, setOpen] = useState(false);
+interface Props {
+  openStatus: boolean;
+  closeDrawer: () => void;
+  drawerType?: string;
+}
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const closeDrawer = () => {
-    setOpen(false);
-  };
-
+const AddDrawer: React.FC<Props> = ({
+  openStatus,
+  closeDrawer,
+  drawerType,
+}) => {
   const submitHandler = () => {
     form
       .validateFields()
@@ -39,14 +38,11 @@ const AddDrawer: React.FC = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-        New
-      </Button>
       <Drawer
-        title="Create a new service"
+        title={drawerType}
         width={720}
         onClose={closeDrawer}
-        open={open}
+        open={openStatus}
         styles={{
           body: {
             paddingBottom: 80,

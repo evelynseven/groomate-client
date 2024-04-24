@@ -3,8 +3,9 @@ import TableHeader from "@/app/components/TableHeader";
 import React, { useEffect, useState } from "react";
 import GenericTable from "@/app/components/GenericTable";
 import { fetchData } from "@/app/api/api";
-import { Space } from "antd";
+import { Button, Space } from "antd";
 import AddService from "./AddService";
+import { PlusOutlined } from "@ant-design/icons";
 
 interface Service {
   id: string;
@@ -42,7 +43,9 @@ const ServicesPage = () => {
       key: "action",
       render: () => (
         <Space size="middle">
-          <a className="text-blue-500">Edit</a>
+          <a onClick={editBtnHandler} className="text-blue-500">
+            Edit
+          </a>
         </Space>
       ),
     },
@@ -57,11 +60,41 @@ const ServicesPage = () => {
     getServices();
   }, []);
 
+  //control the opening of the drawer
+  const [openStatus, setOpenStatus] = useState(false);
+  //control the title of the drawer
+  const [drawerType, setDrawerType] = useState("");
+
+  const showDrawer = () => {
+    setOpenStatus(true);
+  };
+
+  const closeDrawer = () => {
+    setOpenStatus(false);
+  };
+
+  const addBtnHandler = () => {
+    setDrawerType("Create a new service");
+    showDrawer();
+  };
+
+  const editBtnHandler = () => {
+    setDrawerType("Edit service information");
+    showDrawer();
+  };
+
   return (
     <>
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Services" />
-        <AddService />
+        <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
+          New
+        </Button>
+        <AddService
+          openStatus={openStatus}
+          closeDrawer={closeDrawer}
+          drawerType={drawerType}
+        />
       </div>
       <GenericTable<Service> dataSource={services} columns={columns} />
     </>
