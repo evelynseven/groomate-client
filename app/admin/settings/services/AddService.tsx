@@ -14,6 +14,7 @@ import {
 interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
+  getServices: () => void;
   drawerType?: string;
   fieldsValue: object;
 }
@@ -21,6 +22,7 @@ interface Props {
 const AddDrawer: React.FC<Props> = ({
   openStatus,
   closeDrawer,
+  getServices,
   drawerType,
   fieldsValue,
 }) => {
@@ -37,8 +39,10 @@ const AddDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        postData("services", values);
-        closeDrawer();
+        postData("services", values).then(() => {
+          closeDrawer();
+          getServices();
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -50,8 +54,10 @@ const AddDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         if (fieldsValue && "id" in fieldsValue) {
-          putData(`services/${fieldsValue.id}`, values);
-          closeDrawer();
+          putData(`services/${fieldsValue.id}`, values).then(() => {
+            closeDrawer();
+            getServices();
+          });
         } else {
           console.error("ID not found in fieldsValue");
         }

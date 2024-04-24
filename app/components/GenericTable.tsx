@@ -5,19 +5,17 @@ import type { TableProps } from "antd";
 interface GenericTableProps<T> {
   dataSource: T[];
   columns: TableProps<T>["columns"];
-  refresh: boolean;
 }
 
 const GenericTable = <T extends Record<string, any>>({
   dataSource,
   columns,
-  refresh,
 }: GenericTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
 
   useEffect(() => {
     setData(dataSource);
-  }, [dataSource, refresh]);
+  }, [dataSource]);
 
   return (
     <div>

@@ -28,7 +28,7 @@ const ServicesPage = () => {
       key: "nameAbbrev",
     },
     {
-      title: "Base Price",
+      title: "Base Price (CAD)",
       dataIndex: "basePrice",
       key: "basePrice",
     },
@@ -64,25 +64,25 @@ const ServicesPage = () => {
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState({});
-  //make page refresh
-  const [refresh, setRefresh] = useState(false);
 
-  const toggleRefresh = () => setRefresh(!refresh);
-
-  useEffect(() => {
-    const getServices = async () => {
+  const getServices = async () => {
+    try {
       const data: Array<Service> = await fetchData("services");
       setServices(data.map((item) => ({ ...item, key: item.id })));
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
     getServices();
-  }, [refresh]);
+  }, []);
 
   const showDrawer = () => {
     setOpenStatus(true);
   };
 
   const closeDrawer = () => {
-    toggleRefresh();
     setOpenStatus(false);
   };
 
@@ -108,15 +108,12 @@ const ServicesPage = () => {
         <AddService
           openStatus={openStatus}
           closeDrawer={closeDrawer}
+          getServices={getServices}
           drawerType={drawerType}
           fieldsValue={fieldsValue}
         />
       </div>
-      <GenericTable<Service>
-        dataSource={services}
-        columns={columns}
-        refresh={refresh}
-      />
+      <GenericTable<Service> dataSource={services} columns={columns} />
     </>
   );
 };
