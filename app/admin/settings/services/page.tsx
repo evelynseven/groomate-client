@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import GenericTable from "@/app/components/GenericTable";
 import { fetchData } from "@/app/api/api";
 import { Button, Space } from "antd";
-import AddService from "./AddService";
+import EditService from "./EditService";
 import { PlusOutlined } from "@ant-design/icons";
 
 interface Service {
@@ -105,7 +105,7 @@ const ServicesPage = () => {
         <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
           New
         </Button>
-        <AddService
+        <EditService
           openStatus={openStatus}
           closeDrawer={closeDrawer}
           getServices={getServices}

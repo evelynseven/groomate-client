@@ -1,31 +1,31 @@
-import React, { useEffect } from "react";
-import { postData, putData } from "@/app/api/api";
-import {
-  Button,
-  Col,
-  Drawer,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Space,
-} from "antd";
+import React, { useEffect, useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import { postData, putData } from "../../api/api";
+import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
 
 interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
-  getServices: () => void;
+  getCustomers: () => void;
   drawerType?: string;
   fieldsValue: object;
 }
 
-const AddDrawer: React.FC<Props> = ({
+const EditDrawer: React.FC<Props> = ({
   openStatus,
   closeDrawer,
-  getServices,
+  getCustomers,
   drawerType,
   fieldsValue,
 }) => {
+  const { Option } = Select;
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="+1">+1</Option>
+      </Select>
+    </Form.Item>
+  );
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -39,9 +39,10 @@ const AddDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        postData("services", values).then(() => {
+        values.phoneNumber = `+1${values.phoneNumber}`;
+        postData("customers", values).then(() => {
           closeDrawer();
-          getServices();
+          getCustomers();
         });
       })
       .catch((err) => {
@@ -54,9 +55,9 @@ const AddDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         if (fieldsValue && "id" in fieldsValue) {
-          putData(`services/${fieldsValue.id}`, values).then(() => {
+          putData(`customers/${fieldsValue.id}`, values).then(() => {
             closeDrawer();
-            getServices();
+            getCustomers();
           });
         } else {
           console.error("ID not found in fieldsValue");
@@ -70,8 +71,7 @@ const AddDrawer: React.FC<Props> = ({
   return (
     <>
       <Drawer
-        destroyOnClose
-        title={`${drawerType} Service`}
+        title="Create a new customer"
         width={720}
         onClose={closeDrawer}
         open={openStatus}
@@ -92,27 +92,28 @@ const AddDrawer: React.FC<Props> = ({
           </Space>
         }
       >
-        <Form layout="vertical" form={form}>
+        <Form layout="vertical" form={form} initialValues={{ prefix: "+1" }}>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="name"
-                label="Name"
-                rules={[{ required: true, message: "Please enter name" }]}
+                name="firstName"
+                label="First Name"
+                rules={[{ required: true, message: "Please enter first name" }]}
               >
-                <Input placeholder="Please enter name" autoComplete="off" />
+                <Input
+                  placeholder="Please enter first name"
+                  autoComplete="off"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="nameAbbrev"
-                label="Abbreviation"
-                rules={[
-                  { required: true, message: "Please enter abbreviation" },
-                ]}
+                name="lastName"
+                label="Last Name"
+                rules={[{ required: true, message: "Please enter last name" }]}
               >
                 <Input
-                  placeholder="Please enter abbreviation"
+                  placeholder="Please enter last name"
                   autoComplete="off"
                 />
               </Form.Item>
@@ -121,13 +122,28 @@ const AddDrawer: React.FC<Props> = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="basePrice"
-                label="Base Price (CAD)"
+                name="phoneNumber"
+                label="Phone Number"
                 rules={[
-                  { required: true, message: "Please enter Base Price (CAD)" },
+                  {
+                    required: true,
+                    message: "Please enter your phone number",
+                  },
                 ]}
               >
-                <InputNumber />
+                <Input addonBefore={prefixSelector} style={{ width: "100%" }} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[{ required: true, message: "Please enter email" }]}
+              >
+                <Input
+                  placeholder="Please enter last name"
+                  autoComplete="off"
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -156,4 +172,4 @@ const AddDrawer: React.FC<Props> = ({
   );
 };
 
-export default AddDrawer;
+export default EditDrawer;
