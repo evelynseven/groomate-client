@@ -72,7 +72,6 @@ const ServicesPage = () => {
   useEffect(() => {
     const getServices = async () => {
       const data: Array<Service> = await fetchData("services");
-      console.log(data);
       setServices(data.map((item) => ({ ...item, key: item.id })));
     };
     getServices();
