@@ -88,6 +88,7 @@ const ServicesPage = () => {
 
   const addBtnHandler = () => {
     setDrawerType("Create");
+    setFieldsValue({});
     showDrawer();
   };
 

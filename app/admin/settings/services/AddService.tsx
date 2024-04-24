@@ -27,9 +27,11 @@ const AddDrawer: React.FC<Props> = ({
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (fieldsValue) {
-      form.setFieldsValue(fieldsValue);
+    console.log(Object.keys(fieldsValue).length);
+    if (Object.keys(fieldsValue).length === 0) {
+      form.resetFields();
     }
+    form.setFieldsValue(fieldsValue);
   }, [fieldsValue]);
 
   const createHandler = () => {
