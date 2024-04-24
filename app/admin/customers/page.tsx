@@ -51,8 +51,14 @@ const CustomersPage = () => {
   const [fieldsValue, setFieldsValue] = useState({});
 
   const getCustomers = async () => {
-    const customers: Array<Customer> = await fetchData("customers");
-    setCustomers(customers.map((item) => ({ ...item, key: item.phoneNumber })));
+    try {
+      const customers: Array<Customer> = await fetchData("customers");
+      setCustomers(
+        customers.map((item) => ({ ...item, key: item.phoneNumber }))
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

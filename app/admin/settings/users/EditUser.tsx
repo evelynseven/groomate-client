@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { postData, putData } from "../../api/api";
+import { postData, putData } from "@/app/api/api";
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
 
 interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
-  getCustomers: () => void;
+  getUsers: () => void;
   drawerType?: string;
   fieldsValue: object;
 }
@@ -13,7 +13,7 @@ interface Props {
 const EditDrawer: React.FC<Props> = ({
   openStatus,
   closeDrawer,
-  getCustomers,
+  getUsers,
   drawerType,
   fieldsValue,
 }) => {
@@ -26,6 +26,7 @@ const EditDrawer: React.FC<Props> = ({
     </Form.Item>
   );
   const [form] = Form.useForm();
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   useEffect(() => {
     if (Object.keys(fieldsValue).length === 0) {
@@ -39,9 +40,9 @@ const EditDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         values.phoneNumber = `+1${values.phoneNumber}`;
-        postData("customers", values).then(() => {
+        postData("users", values).then(() => {
           closeDrawer();
-          getCustomers();
+          getUsers();
         });
       })
       .catch((err) => {
@@ -54,9 +55,9 @@ const EditDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         if (fieldsValue && "id" in fieldsValue) {
-          putData(`customers/${fieldsValue.id}`, values).then(() => {
+          putData(`users/${fieldsValue.id}`, values).then(() => {
             closeDrawer();
-            getCustomers();
+            getUsers();
           });
         } else {
           console.error("ID not found in fieldsValue");
@@ -70,7 +71,8 @@ const EditDrawer: React.FC<Props> = ({
   return (
     <>
       <Drawer
-        title="Create a new customer"
+        destroyOnClose
+        title={`${drawerType} User`}
         width={720}
         onClose={closeDrawer}
         open={openStatus}
@@ -143,6 +145,25 @@ const EditDrawer: React.FC<Props> = ({
               </Form.Item>
             </Col>
           </Row>
+          {drawerType !== "Edit" && (
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  rules={[{ required: true, message: "Please enter password" }]}
+                >
+                  <Input.Password
+                    placeholder="Please enter password"
+                    visibilityToggle={{
+                      visible: passwordVisible,
+                      onVisibleChange: setPasswordVisible,
+                    }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          )}
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
