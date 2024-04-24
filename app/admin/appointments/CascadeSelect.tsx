@@ -16,7 +16,11 @@ interface Pet {
   remarks: string;
 }
 
-const CascadeSelect = () => {
+interface Props {
+  setCustomerPetIds: (customerId: string, petId: string) => void;
+}
+
+const CascadeSelect = ({ setCustomerPetIds }: Props) => {
   const [customerOptions, setCustomerOptions] = useState<any[]>([]);
   const [customerId, setCustomerId] = useState("");
   const [petOptions, setPetOptions] = useState<any[]>([]);
@@ -42,9 +46,14 @@ const CascadeSelect = () => {
     value: string;
     label: React.ReactNode;
   }) => {
-    console.log(value.value);
-
     setCustomerId(value.value);
+  };
+
+  const handlePetChange = (value: {
+    value: string;
+    label: React.ReactNode;
+  }) => {
+    setCustomerPetIds(customerId, value.value);
   };
 
   useEffect(() => {
@@ -75,7 +84,7 @@ const CascadeSelect = () => {
         labelInValue
         style={{ width: 200 }}
         placeholder="Search to Select"
-        // optionFilterProp="children"
+        optionFilterProp="children"
         filterOption={(input, option) => (option?.label ?? "").includes(input)}
         filterSort={(optionA, optionB) =>
           (optionA?.label ?? "")
@@ -91,7 +100,7 @@ const CascadeSelect = () => {
         labelInValue
         style={{ width: 200 }}
         placeholder="Search to Select"
-        // optionFilterProp="children"
+        optionFilterProp="children"
         filterOption={(input, option) => (option?.label ?? "").includes(input)}
         filterSort={(optionA, optionB) =>
           (optionA?.label ?? "")
@@ -99,6 +108,7 @@ const CascadeSelect = () => {
             .localeCompare((optionB?.label ?? "").toLowerCase())
         }
         options={petOptions ? petOptions : []}
+        onChange={handlePetChange}
       />
     </div>
   );

@@ -4,9 +4,13 @@ import { fetchData } from "@/app/api/api";
 
 interface Props {
   endpoint: string;
+  setItemId: (associateId: string) => void;
 }
 
-const SearchSelect = <T extends Record<string, any>>({ endpoint }: Props) => {
+const SearchSelect = <T extends Record<string, any>>({
+  endpoint,
+  setItemId,
+}: Props) => {
   const [selectOptions, setSelectOptions] = useState<any[]>([]);
   useEffect(() => {
     const getUsers = async () => {
@@ -14,7 +18,7 @@ const SearchSelect = <T extends Record<string, any>>({ endpoint }: Props) => {
         const items: Array<T> = await fetchData(endpoint);
         const mappedOptions = items.map((item) => ({
           value: item.id,
-          label: item.fullName,
+          label: item.hasOwnProperty("fullName") ? item.fullName : item.name,
         }));
         setSelectOptions(mappedOptions);
       } catch (error) {
@@ -24,6 +28,13 @@ const SearchSelect = <T extends Record<string, any>>({ endpoint }: Props) => {
 
     getUsers();
   }, []);
+
+  const handleAssociateChange = (value: {
+    value: string;
+    label: React.ReactNode;
+  }) => {
+    setItemId(value.value);
+  };
 
   return (
     <Select
@@ -39,6 +50,7 @@ const SearchSelect = <T extends Record<string, any>>({ endpoint }: Props) => {
           .localeCompare((optionB?.label ?? "").toLowerCase())
       }
       options={selectOptions ? selectOptions : []}
+      onChange={handleAssociateChange}
     />
   );
 };

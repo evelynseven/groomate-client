@@ -12,11 +12,28 @@ interface Props {
   fieldsValue: object;
 }
 
+interface Appointment {
+  appointmentTime: string;
+  customerId: string;
+  petId: string;
+  baseServiceId: string;
+  associateId: string;
+  remarks: string;
+}
+
 interface User {
   id: string;
   fullName: string;
   phoneNumber: string;
   email: string;
+  remarks: string;
+}
+
+interface Service {
+  id: string;
+  name: string;
+  nameAbbrev: Date;
+  basePrice: number;
   remarks: string;
 }
 
@@ -37,16 +54,49 @@ const EditDrawer: React.FC<Props> = ({
     form.setFieldsValue(fieldsValue);
   }, [fieldsValue]);
 
+  const newAppointment: Appointment = {
+    appointmentTime: "",
+    customerId: "",
+    petId: "",
+    baseServiceId: "",
+    associateId: "",
+    remarks: "",
+  };
+
+  const setCustomerPetIds = (customerId: string, petId: string) => {
+    newAppointment.customerId = customerId;
+    newAppointment.petId = petId;
+  };
+
+  const setServiceId = (baseServiceId: string) => {
+    newAppointment.baseServiceId = baseServiceId;
+  };
+
+  const setAssociateId = (associateId: string) => {
+    newAppointment.associateId = associateId;
+  };
+
+  const setDate = (_date: any, dateString: any) => {
+    newAppointment.appointmentTime = new Date(dateString).toISOString();
+  };
+
+  const setRemarks = () => {
+    newAppointment.remarks = form.getFieldValue("remarks");
+  };
+
   const createHandler = () => {
     form
       .validateFields()
-      .then(async (values) => {
-        console.log(values);
+      .then(async () => {
+        console.log(newAppointment);
 
-        // postData("appointments", values).then(() => {
-        //   closeDrawer();
-        //   getAppointments();
-        // });
+        postData(
+          `customers/${newAppointment.customerId}/appointments`,
+          newAppointment
+        ).then(() => {
+          closeDrawer();
+          getAppointments();
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -100,25 +150,38 @@ const EditDrawer: React.FC<Props> = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                // name="customer"
                 label="Customer and Pet"
                 rules={[
                   { required: true, message: "Please select customer and pet" },
                 ]}
               >
-                <CascadeSelect />
+                <CascadeSelect setCustomerPetIds={setCustomerPetIds} />
               </Form.Item>
             </Col>
-            <Col span={12}></Col>
+            <Col span={12}>
+              <Form.Item
+                label="Service"
+                rules={[
+                  { required: true, message: "Please select base service" },
+                ]}
+              >
+                <SearchSelect<Service>
+                  endpoint="services"
+                  setItemId={setServiceId}
+                />
+              </Form.Item>
+            </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                // name="associate"
                 label="Associate"
                 rules={[{ required: true, message: "Please select associate" }]}
               >
-                <SearchSelect<User> endpoint="users" />
+                <SearchSelect<User>
+                  endpoint="users"
+                  setItemId={setAssociateId}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -129,7 +192,10 @@ const EditDrawer: React.FC<Props> = ({
                   { required: true, message: "Please select appointment time" },
                 ]}
               >
-                <DatePicker showTime={{ format: format, showSecond: false }} />
+                <DatePicker
+                  onChange={setDate}
+                  showTime={{ format: format, showSecond: false }}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -148,6 +214,7 @@ const EditDrawer: React.FC<Props> = ({
                   rows={4}
                   placeholder="Please enter remarks"
                   autoComplete="off"
+                  onChange={setRemarks}
                 />
               </Form.Item>
             </Col>
