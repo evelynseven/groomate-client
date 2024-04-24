@@ -59,7 +59,7 @@ const UsersPage = () => {
   return (
     <>
       <TableHeader PageName="Users" />
-      <GenericTable<User> dataType={users} columns={columns} />
+      <GenericTable<User> dataSource={users} columns={columns} />
     </>
   );
 };

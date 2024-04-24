@@ -84,7 +84,7 @@ const AppointmentsPage = () => {
   return (
     <>
       <TableHeader PageName="Appointments" />
-      <GenericTable<Appointment> dataType={appointments} columns={columns} />
+      <GenericTable<Appointment> dataSource={appointments} columns={columns} />
     </>
   );
 };

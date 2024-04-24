@@ -3,11 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { postData } from "../../api/api";
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
 
-interface AddDrawerProps {
-  onClose: () => void;
-}
-
-const AddDrawer: React.FC<AddDrawerProps> = ({ onClose }) => {
+const AddDrawer: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
@@ -16,7 +12,6 @@ const AddDrawer: React.FC<AddDrawerProps> = ({ onClose }) => {
 
   const closeDrawer = () => {
     setOpen(false);
-    onClose();
   };
 
   const submitHandler = () => {

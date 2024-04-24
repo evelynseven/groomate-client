@@ -59,7 +59,7 @@ const BreedsPage = () => {
   return (
     <>
       <TableHeader PageName="Breeds" />
-      <GenericTable<Breed> dataType={breeds} columns={columns} />
+      <GenericTable<Breed> dataSource={breeds} columns={columns} />
     </>
   );
 };

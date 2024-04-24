@@ -57,22 +57,13 @@ const ServicesPage = () => {
     getServices();
   }, []);
 
-  const [shouldRefresh, setShouldRefresh] = useState(false);
-  const handleDrawerClose = () => {
-    setShouldRefresh(true);
-  };
-
   return (
     <>
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Services" />
-        <AddService onClose={handleDrawerClose} />
+        <AddService />
       </div>
-      <GenericTable<Service>
-        dataType={services}
-        columns={columns}
-        shouldRefresh={shouldRefresh}
-      />
+      <GenericTable<Service> dataSource={services} columns={columns} />
     </>
   );
 };

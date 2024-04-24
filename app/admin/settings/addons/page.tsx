@@ -59,7 +59,7 @@ const AddonsPage = () => {
   return (
     <>
       <TableHeader PageName="Addons" />
-      <GenericTable<Addon> dataType={addons} columns={columns} />
+      <GenericTable<Addon> dataSource={addons} columns={columns} />
     </>
   );
 };

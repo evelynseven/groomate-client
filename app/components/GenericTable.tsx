@@ -3,21 +3,19 @@ import { Table } from "antd";
 import type { TableProps } from "antd";
 
 interface GenericTableProps<T> {
-  dataType: T[];
+  dataSource: T[];
   columns: TableProps<T>["columns"];
-  shouldRefresh: boolean;
 }
 
 const GenericTable = <T extends Record<string, any>>({
-  dataType,
+  dataSource,
   columns,
-  shouldRefresh,
 }: GenericTableProps<T>) => {
   const [data, setData] = useState<T[]>([]);
 
   useEffect(() => {
-    setData(dataType.map((item, index) => ({ ...item, key: index })));
-  }, [dataType, shouldRefresh]);
+    setData(dataSource.map((item, index) => ({ ...item, key: index })));
+  }, [dataSource]);
 
   return (
     <div>
