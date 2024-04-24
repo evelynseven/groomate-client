@@ -16,7 +16,7 @@ const GenericTable = <T extends Record<string, any>>({
   const [data, setData] = useState<T[]>([]);
 
   useEffect(() => {
-    setData(dataSource.map((item, index) => ({ ...item, key: index })));
+    setData(dataSource);
   }, [dataSource, refresh]);
 
   return (

@@ -71,8 +71,9 @@ const ServicesPage = () => {
 
   useEffect(() => {
     const getServices = async () => {
-      const services: Array<Service> = await fetchData("services");
-      setServices(services.map((item) => ({ ...item, key: item.id })));
+      const data: Array<Service> = await fetchData("services");
+      console.log(data);
+      setServices(data.map((item) => ({ ...item, key: item.id })));
     };
     getServices();
   }, [refresh]);
@@ -82,8 +83,8 @@ const ServicesPage = () => {
   };
 
   const closeDrawer = () => {
-    setOpenStatus(false);
     toggleRefresh();
+    setOpenStatus(false);
   };
 
   const addBtnHandler = () => {

@@ -27,7 +27,6 @@ const AddDrawer: React.FC<Props> = ({
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.log(Object.keys(fieldsValue).length);
     if (Object.keys(fieldsValue).length === 0) {
       form.resetFields();
     }
