@@ -56,21 +56,26 @@ const ServicesPage = () => {
     },
   ];
 
+  //control the table data
   const [services, setServices] = useState<Service[]>([]);
-  useEffect(() => {
-    const getServices = async () => {
-      const services: Array<Service> = await fetchData("services");
-      setServices(services.map((item) => ({ ...item, key: item.id })));
-    };
-    getServices();
-  }, []);
-
   //control the opening of the drawer
   const [openStatus, setOpenStatus] = useState(false);
   //control the title of the drawer
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState({});
+  //make page refresh
+  const [refresh, setRefresh] = useState(false);
+
+  const toggleRefresh = () => setRefresh(!refresh);
+
+  useEffect(() => {
+    const getServices = async () => {
+      const services: Array<Service> = await fetchData("services");
+      setServices(services.map((item) => ({ ...item, key: item.id })));
+    };
+    getServices();
+  }, [refresh]);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -78,6 +83,7 @@ const ServicesPage = () => {
 
   const closeDrawer = () => {
     setOpenStatus(false);
+    toggleRefresh();
   };
 
   const addBtnHandler = () => {
@@ -105,7 +111,11 @@ const ServicesPage = () => {
           fieldsValue={fieldsValue}
         />
       </div>
-      <GenericTable<Service> dataSource={services} columns={columns} />
+      <GenericTable<Service>
+        dataSource={services}
+        columns={columns}
+        refresh={refresh}
+      />
     </>
   );
 };

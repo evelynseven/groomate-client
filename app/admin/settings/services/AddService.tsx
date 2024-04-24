@@ -48,7 +48,7 @@ const AddDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        if ("id" in fieldsValue) {
+        if (fieldsValue && "id" in fieldsValue) {
           putData(`services/${fieldsValue.id}`, values);
           closeDrawer();
         } else {
