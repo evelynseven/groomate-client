@@ -99,7 +99,7 @@ const ServicesPage = () => {
   };
 
   return (
-    <>
+    <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Services" />
         <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
@@ -114,7 +114,7 @@ const ServicesPage = () => {
         />
       </div>
       <GenericTable<Service> dataSource={services} columns={columns} />
-    </>
+    </div>
   );
 };
 

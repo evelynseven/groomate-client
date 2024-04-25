@@ -99,7 +99,7 @@ const BreedsPage = () => {
   };
 
   return (
-    <>
+    <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Breeds" />
         <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
@@ -114,7 +114,7 @@ const BreedsPage = () => {
         />
       </div>
       <GenericTable<Breed> dataSource={breeds} columns={columns} />
-    </>
+    </div>
   );
 };
 

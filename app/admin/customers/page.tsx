@@ -7,6 +7,7 @@ import TableHeader from "@/app/components/TableHeader";
 import EditCustomer from "./EditCustomer";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 interface Customer {
   id: string;
@@ -22,7 +23,11 @@ const CustomersPage = () => {
       title: "Full Name",
       dataIndex: "fullName",
       key: "fullName",
-      render: (text: string) => <a className="text-blue-500">{text}</a>,
+      render: (text: string, record: Customer) => (
+        <Link href={`customers/${record.id}`} className="text-blue-500">
+          {text}
+        </Link>
+      ),
     },
     {
       title: "Phone Number",
@@ -87,7 +92,7 @@ const CustomersPage = () => {
   };
 
   return (
-    <>
+    <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Customers" />
         <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
@@ -102,7 +107,7 @@ const CustomersPage = () => {
         />
       </div>
       <GenericTable<Customer> dataSource={customers} columns={columns} />
-    </>
+    </div>
   );
 };
 

@@ -14,6 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning={true} lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body>
         <NavBar />
         {children}

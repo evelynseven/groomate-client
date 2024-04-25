@@ -63,11 +63,7 @@ const AdminLayout = ({ children }: Props) => {
         mode="inline"
         items={items}
       />
-      <div className="w-full p-5 bg-slate-50">
-        <div className="h-full p-5 bg-white shadow-lg rounded-lg">
-          {children}
-        </div>
-      </div>
+      <div className="w-full p-5 bg-slate-50">{children}</div>
     </div>
   );
 };

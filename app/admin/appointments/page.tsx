@@ -6,6 +6,8 @@ import { fetchData } from "@/app/api/api";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditAppointment from "./EditAppointment";
+import Link from "next/link";
+import dateFormatter from "@/app/utils/dateTimeFormatter/dateTimeFormatter";
 
 interface Appointment {
   id: string;
@@ -24,32 +26,14 @@ const AppointmentsPage = () => {
       title: "Appointment Time",
       dataIndex: "appointmentTime",
       key: "appointmentTime",
-      render: (text: string) => {
-        const appointmentDate = new Date(text);
-        const monthNames = [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ];
-        const month = monthNames[appointmentDate.getMonth()];
-        const day = appointmentDate.getDate();
-        const year = appointmentDate.getFullYear();
-        const hours = appointmentDate.getHours();
-        const minutes = appointmentDate.getMinutes();
-        const formattedDate = `${month} ${day}, ${year} ${hours}:${
-          minutes < 10 ? "0" + minutes : minutes
-        }`;
+      render: (text: string, record: Appointment) => {
+        const formattedDate = dateFormatter(text);
 
-        return <a className="text-blue-500">{formattedDate}</a>;
+        return (
+          <Link href={`appointments/${record.id}`} className="text-blue-500">
+            {formattedDate}
+          </Link>
+        );
       },
     },
     {
@@ -118,7 +102,7 @@ const AppointmentsPage = () => {
   };
 
   return (
-    <>
+    <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Appointments" />
         <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
@@ -133,7 +117,7 @@ const AppointmentsPage = () => {
         />
       </div>
       <GenericTable<Appointment> dataSource={appointments} columns={columns} />
-    </>
+    </div>
   );
 };
 
