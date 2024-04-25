@@ -2,9 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../../../api/api";
-import { Descriptions } from "antd";
-import type { DescriptionsProps } from "antd";
+import { Button, Descriptions, Dropdown } from "antd";
+import type { DescriptionsProps, MenuProps } from "antd";
 import dateFormatter from "@/app/utils/dateFormatter/dateFormatter";
+import { Tabs } from "antd";
+import type { TabsProps } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 
 interface Props {
   customerId: string;
@@ -23,12 +26,35 @@ interface Pet {
 }
 
 const PetDetail = ({ customerId }: Props) => {
+  const [petList, setPetList] = useState<Pet[]>();
+  const [selectedPetId, setSelectedPetId] = useState("");
   const [pet, setPet] = useState<Pet>();
+
+  const fetchPets = async () => {
+    try {
+      const pets = await fetchData(`customers/${customerId}/pets`);
+      setPetList(pets);
+      setSelectedPetId(pets[0].id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  let pets: TabsProps["items"] = [];
+  if (petList) {
+    pets = petList.map((pet) => {
+      return { key: pet.id, label: pet.name };
+    });
+  }
+
+  const onChange = (key: string) => {
+    setSelectedPetId(key);
+  };
 
   const fetchPet = async () => {
     try {
       const pet = await fetchData(
-        `customers/${customerId}/pets/832d8dbb-011c-4b7e-91f8-729fee44c770`
+        `customers/${customerId}/pets/${selectedPetId}`
       );
       setPet(pet);
     } catch (error) {
@@ -37,10 +63,14 @@ const PetDetail = ({ customerId }: Props) => {
   };
 
   useEffect(() => {
-    fetchPet();
+    fetchPets();
   }, []);
 
-  const items: DescriptionsProps["items"] = [
+  useEffect(() => {
+    fetchPet();
+  }, [selectedPetId]);
+
+  const petProps: DescriptionsProps["items"] = [
     {
       key: "1",
       label: "Type",
@@ -84,11 +114,57 @@ const PetDetail = ({ customerId }: Props) => {
     },
   ];
 
-  return (
-    <div className="w-2/4 h-full p-5 mx-4 bg-white shadow-lg rounded-lg">
-      <p className="font-semibold mb-4">{pet ? pet.name : "Pet"}</p>
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          Add
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          Edit
+        </a>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.aliyun.com"
+        >
+          Delete
+        </a>
+      ),
+      danger: true,
+    },
+  ];
 
-      <Descriptions layout="vertical" items={items} column={2} />
+  return (
+    <div className="w-2/4 h-full ml-4 mr-2 py-4 px-5 bg-white shadow-lg rounded-lg">
+      <div className="flex justify-between items-center">
+        <p className="font-semibold ">Pets</p>
+        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+          <Button icon={<MoreOutlined />} shape="circle"></Button>
+        </Dropdown>
+      </div>
+
+      {pets && <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />}
+      <Descriptions layout="vertical" items={petProps} column={2} />
     </div>
   );
 };

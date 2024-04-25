@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../../../api/api";
 import AppointmentCard from "./AppointmentCard";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 
 interface Props {
   customerId: string;
@@ -37,14 +39,21 @@ const AppointmentList = ({ customerId }: Props) => {
   }, []);
 
   return (
-    <div className="w-1/4 h-full">
-      <p className="font-semibold mb-4">Appointments</p>
-      {appointments &&
-        appointments.map((appointment) => {
-          return (
-            <AppointmentCard key={appointment.id} appointment={appointment} />
-          );
-        })}
+    <div className="w-1/4 h-full overflow-hidden">
+      <div className="flex justify-between m-2 items-center">
+        <p className="font-semibold">Appointments</p>
+        <Button icon={<PlusOutlined />} shape="round" type="link">
+          New
+        </Button>
+      </div>
+      <div className="h-full pt-1 pl-2 pb-8 overflow-y-auto ">
+        {appointments &&
+          appointments.map((appointment) => {
+            return (
+              <AppointmentCard key={appointment.id} appointment={appointment} />
+            );
+          })}
+      </div>
     </div>
   );
 };

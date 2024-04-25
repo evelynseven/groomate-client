@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchData } from "../../../api/api";
-import { Descriptions } from "antd";
-import type { DescriptionsProps } from "antd";
+import { Button, Descriptions, Dropdown } from "antd";
+import type { DescriptionsProps, MenuProps } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 
 interface Props {
   customerId: string;
@@ -34,7 +35,7 @@ const CustomerDetail = ({ customerId }: Props) => {
     fetchCustomer();
   }, []);
 
-  const items: DescriptionsProps["items"] = [
+  const customerProps: DescriptionsProps["items"] = [
     {
       key: "1",
       label: "Phone Number",
@@ -58,14 +59,45 @@ const CustomerDetail = ({ customerId }: Props) => {
     },
   ];
 
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.antgroup.com"
+        >
+          Edit
+        </a>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.aliyun.com"
+        >
+          Delete
+        </a>
+      ),
+      danger: true,
+    },
+  ];
+
   return (
     <div className="w-1/4 h-full p-5 bg-white shadow-lg rounded-lg">
-      <Descriptions
-        title={customer ? customer.fullName : "Customer"}
-        layout="vertical"
-        items={items}
-        column={1}
-      />
+      <div className="flex justify-between mb-4 items-center">
+        <p className="font-semibold text-xl">
+          {customer ? customer.fullName : "Customer"}
+        </p>
+        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+          <Button icon={<MoreOutlined />} shape="circle"></Button>
+        </Dropdown>
+      </div>
+      <Descriptions layout="vertical" items={customerProps} column={1} />
     </div>
   );
 };
