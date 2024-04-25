@@ -7,7 +7,18 @@ interface Props {
   closeDrawer: () => void;
   getCustomers: () => void;
   drawerType?: string;
-  fieldsValue: object;
+  fieldsValue: Customer;
+}
+
+interface Customer {
+  id: string;
+  fullName: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  remarks: string;
+  address: string;
 }
 
 const EditDrawer: React.FC<Props> = ({
@@ -39,7 +50,16 @@ const EditDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         values.phoneNumber = `+1${values.phoneNumber}`;
-        postData("customers", values).then(() => {
+        const customer = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          phoneNumber: values.phoneNumber,
+          email: values.email,
+          remarks: values.remarks,
+        };
+        console.log(customer);
+
+        postData("customers", customer).then(() => {
           closeDrawer();
           getCustomers();
         });
@@ -54,7 +74,17 @@ const EditDrawer: React.FC<Props> = ({
       .validateFields()
       .then(async (values) => {
         if (fieldsValue && "id" in fieldsValue) {
-          putData(`customers/${fieldsValue.id}`, values).then(() => {
+          const customer = {
+            firstName: values.firstName,
+            lastName: values.lastName,
+            phoneNumber: values.phoneNumber,
+            email: values.email,
+            remarks: values.remarks,
+          };
+
+          console.log(customer);
+
+          putData(`customers/${fieldsValue.id}`, customer).then(() => {
             closeDrawer();
             getCustomers();
           });

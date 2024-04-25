@@ -5,6 +5,7 @@ import { fetchData } from "../../../api/api";
 import { Button, Descriptions, Dropdown } from "antd";
 import type { DescriptionsProps, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import EditCustomer from "../EditCustomer";
 
 interface Props {
   customerId: string;
@@ -13,6 +14,8 @@ interface Props {
 interface Customer {
   id: string;
   fullName: string;
+  firstName: string;
+  lastName: string;
   phoneNumber: string;
   email: string;
   remarks: string;
@@ -21,6 +24,12 @@ interface Customer {
 
 const CustomerDetail = ({ customerId }: Props) => {
   const [customer, setCustomer] = useState<Customer>();
+  //control the opening of the drawer
+  const [openStatus, setOpenStatus] = useState(false);
+  //control the title of the drawer
+  const [drawerType, setDrawerType] = useState("");
+  //control the fields value of the drawer
+  const [fieldsValue, setFieldsValue] = useState<Customer>();
 
   const fetchCustomer = async () => {
     try {
@@ -33,7 +42,7 @@ const CustomerDetail = ({ customerId }: Props) => {
 
   useEffect(() => {
     fetchCustomer();
-  }, []);
+  }, [openStatus]);
 
   const customerProps: DescriptionsProps["items"] = [
     {
@@ -59,18 +68,28 @@ const CustomerDetail = ({ customerId }: Props) => {
     },
   ];
 
+  const showDrawer = () => {
+    setOpenStatus(true);
+  };
+
+  const closeDrawer = () => {
+    setOpenStatus(false);
+  };
+
+  const editBtnHandler = () => {
+    setDrawerType("Edit");
+    if (customer) {
+      setFieldsValue(customer);
+      // console.log(customer);
+
+      showDrawer();
+    }
+  };
+
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          Edit
-        </a>
-      ),
+      label: <a onClick={editBtnHandler}>Edit</a>,
     },
     {
       key: "2",
@@ -98,6 +117,15 @@ const CustomerDetail = ({ customerId }: Props) => {
         </Dropdown>
       </div>
       <Descriptions layout="vertical" items={customerProps} column={1} />
+      {fieldsValue && (
+        <EditCustomer
+          openStatus={openStatus}
+          closeDrawer={closeDrawer}
+          getCustomers={fetchCustomer}
+          drawerType={drawerType}
+          fieldsValue={fieldsValue}
+        />
+      )}
     </div>
   );
 };

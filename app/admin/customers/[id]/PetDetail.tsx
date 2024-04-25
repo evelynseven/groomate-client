@@ -158,12 +158,17 @@ const PetDetail = ({ customerId }: Props) => {
     <div className="w-2/4 h-full ml-4 mr-2 py-4 px-5 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center">
         <p className="font-semibold ">Pets</p>
-        <Dropdown menu={{ items }} placement="bottomRight" arrow>
-          <Button icon={<MoreOutlined />} shape="circle"></Button>
-        </Dropdown>
+
+        {petList && (
+          <Dropdown menu={{ items }} placement="bottomRight" arrow>
+            <Button icon={<MoreOutlined />} shape="circle"></Button>
+          </Dropdown>
+        )}
       </div>
 
-      {pets && <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />}
+      {petList && (
+        <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />
+      )}
       <Descriptions layout="vertical" items={petProps} column={2} />
     </div>
   );
