@@ -65,38 +65,13 @@ const EditDrawer: React.FC<Props> = ({
 
   const [customerAndPet, setCustomerAndPet] = useState(customerAndPetEmpty);
 
-  useEffect(() => {
-    if (Object.keys(fieldsValue).length === 0) {
-      form.resetFields();
-    }
-
-    if (fieldsValue) {
-      form.setFieldValue(
-        "appointmentTime",
-        dayjs(fieldsValue.appointmentTime, "YYYY-MM-DD HH:mm")
-      );
-      form.setFieldValue("associateId", fieldsValue.associateId);
-      form.setFieldValue("baseServiceId", fieldsValue.baseServiceId);
-      form.setFieldValue("customerId", fieldsValue.customerId);
-      form.setFieldValue("petId", fieldsValue.petId);
-      form.setFieldValue("remarks", fieldsValue.remarks);
-
-      setCustomerAndPet({
-        customerId: fieldsValue.customerId,
-        petId: fieldsValue.customerId,
-        customer: fieldsValue.customer,
-        pet: fieldsValue.pet,
-      });
-    }
-  }, [openStatus, fieldsValue]);
-
   const newAppointment = {
-    appointmentTime: "",
-    customerId: "",
-    petId: "",
-    baseServiceId: "",
-    associateId: "",
-    remarks: "",
+    appointmentTime: fieldsValue.appointmentTime,
+    customerId: fieldsValue.customerId,
+    petId: fieldsValue.petId,
+    baseServiceId: fieldsValue.baseServiceId,
+    associateId: fieldsValue.associateId,
+    remarks: fieldsValue.remarks,
   };
 
   const setCustomerPetIds = (customerId: string, petId: string) => {
@@ -112,13 +87,33 @@ const EditDrawer: React.FC<Props> = ({
     newAppointment.associateId = associateId;
   };
 
-  const setDate = (_date: any, dateString: any) => {
+  const setDate = (dateString: any) => {
     newAppointment.appointmentTime = new Date(dateString).toISOString();
   };
 
   const setRemarks = () => {
     newAppointment.remarks = form.getFieldValue("remarks");
   };
+
+  useEffect(() => {
+    if (Object.keys(fieldsValue).length === 0) {
+      form.resetFields();
+    }
+
+    if (fieldsValue) {
+      form.setFieldValue(
+        "appointmentTime",
+        dayjs(fieldsValue.appointmentTime, "YYYY-MM-DD HH:mm")
+      );
+      form.setFieldValue("remarks", fieldsValue.remarks);
+      setCustomerAndPet({
+        customerId: fieldsValue.customerId,
+        petId: fieldsValue.customerId,
+        customer: fieldsValue.customer,
+        pet: fieldsValue.pet,
+      });
+    }
+  }, [openStatus, fieldsValue]);
 
   const createHandler = () => {
     form
@@ -140,12 +135,22 @@ const EditDrawer: React.FC<Props> = ({
   const editHandler = () => {
     form
       .validateFields()
-      .then(async (values) => {
+      .then(async () => {
+        const updatedAppointment = {
+          baseServiceId: newAppointment.baseServiceId,
+          associateId: newAppointment.associateId,
+          appointmentTime: newAppointment.appointmentTime,
+          remarks: newAppointment.remarks,
+        };
+        console.log(updatedAppointment);
+
         if (fieldsValue && "id" in fieldsValue) {
-          putData(`appointments/${fieldsValue.id}`, values).then(() => {
-            closeDrawer();
-            getAppointments();
-          });
+          putData(`appointments/${fieldsValue.id}`, updatedAppointment).then(
+            () => {
+              closeDrawer();
+              getAppointments();
+            }
+          );
         } else {
           console.error("ID not found in fieldsValue");
         }
@@ -184,7 +189,6 @@ const EditDrawer: React.FC<Props> = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                // name="customerAndPet"
                 label="Customer and Pet"
                 rules={[
                   { required: true, message: "Please select customer and pet" },
@@ -198,7 +202,6 @@ const EditDrawer: React.FC<Props> = ({
             </Col>
             <Col span={12}>
               <Form.Item
-                // name="serviceId"
                 label="Service"
                 rules={[
                   { required: true, message: "Please select base service" },
@@ -222,7 +225,6 @@ const EditDrawer: React.FC<Props> = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="associateId"
                 label="Associate"
                 rules={[{ required: true, message: "Please select associate" }]}
               >
