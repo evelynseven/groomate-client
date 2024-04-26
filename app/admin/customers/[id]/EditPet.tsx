@@ -126,8 +126,6 @@ const EditDrawer: React.FC<Props> = ({
             remarks: values.remarks,
           };
 
-          console.log(pet);
-
           putData(`customers/${customerId}/pets/${fieldsValue.id}`, pet).then(
             () => {
               closeDrawer();
@@ -210,7 +208,16 @@ const EditDrawer: React.FC<Props> = ({
                   },
                 ]}
               >
-                <SearchSelect<Pet> endpoint="breeds" setItemId={setBreedId} />
+                {fieldsValue && (
+                  <SearchSelect<Pet>
+                    endpoint="breeds"
+                    setItemId={setBreedId}
+                    defaultValue={{
+                      value: fieldsValue?.breedId,
+                      label: fieldsValue?.breed,
+                    }}
+                  />
+                )}
               </Form.Item>
             </Col>
             <Col span={12}>

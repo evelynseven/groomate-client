@@ -5,11 +5,13 @@ import { fetchData } from "@/app/api/api";
 interface Props {
   endpoint: string;
   setItemId: (itemId: string) => void;
+  defaultValue?: { value: string; label: string };
 }
 
 const SearchSelect = <T extends Record<string, any>>({
   endpoint,
   setItemId,
+  defaultValue,
 }: Props) => {
   const [selectOptions, setSelectOptions] = useState<any[]>([]);
   useEffect(() => {
@@ -52,6 +54,7 @@ const SearchSelect = <T extends Record<string, any>>({
       }
       options={selectOptions ? selectOptions : []}
       onChange={handleItemChange}
+      defaultValue={defaultValue}
     />
   );
 };
