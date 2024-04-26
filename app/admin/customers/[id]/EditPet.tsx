@@ -211,20 +211,18 @@ const EditDrawer: React.FC<Props> = ({
                   },
                 ]}
               >
-                {fieldsValue && (
-                  <SearchSelect<Pet>
-                    endpoint="breeds"
-                    setItemId={setBreedId}
-                    defaultValue={
-                      drawerType === "Edit"
-                        ? {
-                            value: fieldsValue?.breedId,
-                            label: fieldsValue?.breed,
-                          }
-                        : undefined
-                    }
-                  />
-                )}
+                <SearchSelect<Pet>
+                  endpoint="breeds"
+                  setItemId={setBreedId}
+                  defaultValue={
+                    drawerType === "Edit" && fieldsValue
+                      ? {
+                          value: fieldsValue?.breedId,
+                          label: fieldsValue?.breed,
+                        }
+                      : undefined
+                  }
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
