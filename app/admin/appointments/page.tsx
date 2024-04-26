@@ -37,6 +37,11 @@ const AppointmentsPage = () => {
       },
     },
     {
+      title: "Service",
+      dataIndex: "baseService",
+      key: "baseService",
+    },
+    {
       title: "Pet",
       dataIndex: "pet",
       key: "pet",
@@ -113,7 +118,6 @@ const AppointmentsPage = () => {
           closeDrawer={closeDrawer}
           getAppointments={getAppointments}
           drawerType={drawerType}
-          // fieldsValue={fieldsValue}
         />
       </div>
       <GenericTable<Appointment> dataSource={appointments} columns={columns} />
