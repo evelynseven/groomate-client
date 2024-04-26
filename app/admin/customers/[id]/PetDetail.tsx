@@ -138,7 +138,7 @@ const PetDetail = ({ customerId }: Props) => {
 
   const addBtnHandler = () => {
     setDrawerType("Create");
-    // setFieldsValue({});
+    // setFieldsValue(undefined);
     showDrawer();
   };
 

@@ -48,6 +48,9 @@ const EditDrawer: React.FC<Props> = ({
 }) => {
   const { Option } = Select;
   const [form] = Form.useForm();
+  if (drawerType === "Create") {
+    form.resetFields();
+  }
 
   const newPet = {
     name: "",
@@ -87,7 +90,7 @@ const EditDrawer: React.FC<Props> = ({
       form.setFieldValue("groomRating", fieldsValue.groomRating);
       form.setFieldValue("remarks", fieldsValue.remarks);
     }
-  }, [fieldsValue]);
+  }, [openStatus, fieldsValue]);
 
   const createHandler = () => {
     form
@@ -212,10 +215,14 @@ const EditDrawer: React.FC<Props> = ({
                   <SearchSelect<Pet>
                     endpoint="breeds"
                     setItemId={setBreedId}
-                    defaultValue={{
-                      value: fieldsValue?.breedId,
-                      label: fieldsValue?.breed,
-                    }}
+                    defaultValue={
+                      drawerType === "Edit"
+                        ? {
+                            value: fieldsValue?.breedId,
+                            label: fieldsValue?.breed,
+                          }
+                        : undefined
+                    }
                   />
                 )}
               </Form.Item>
