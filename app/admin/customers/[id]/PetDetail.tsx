@@ -9,6 +9,7 @@ import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import EditPet from "./EditPet";
+import AsyncModal from "@/app/components/AsyncModal";
 
 interface Props {
   customerId: string;
@@ -39,6 +40,16 @@ const PetDetail = ({ customerId }: Props) => {
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState<Pet>();
+  //control the async modal
+  const [modalOpenStatus, setModalOpenStatus] = useState(false);
+  //control the modal title
+  const [modalTitle, setModalTitle] = useState("");
+  //control the modal text
+  const [modalText, setModalText] = useState("");
+  //update the current item
+  const [currentItemId, setCurrentItemId] = useState("");
+  //update the delete status
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const fetchPets = async () => {
     try {
@@ -76,11 +87,11 @@ const PetDetail = ({ customerId }: Props) => {
 
   useEffect(() => {
     fetchPets();
-  }, [openStatus]);
+  }, [openStatus, isDeleted]);
 
   useEffect(() => {
     fetchPet();
-  }, [selectedPetId]);
+  }, [selectedPetId, isDeleted]);
 
   const petProps: DescriptionsProps["items"] = [
     {
@@ -151,6 +162,28 @@ const PetDetail = ({ customerId }: Props) => {
     }
   };
 
+  const setDeleted = () => {
+    setIsDeleted(true);
+  };
+
+  const deleteBtnHandler = () => {
+    setModalTitle("Delete Confirmation");
+    if (pet) {
+      setModalText(`Confirm to delete pet "${pet.name}"?`);
+      setCurrentItemId(pet.id);
+    }
+
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+  };
+
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -164,9 +197,9 @@ const PetDetail = ({ customerId }: Props) => {
       key: "3",
       label: (
         <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
+          onClick={() => {
+            deleteBtnHandler();
+          }}
         >
           Delete
         </a>
@@ -184,10 +217,10 @@ const PetDetail = ({ customerId }: Props) => {
         </Dropdown>
       </div>
 
-      {pets[0] && (
+      {pets[0] && petList && (
         <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />
       )}
-      {pets[0] && (
+      {pets[0] && petList && (
         <Descriptions layout="vertical" items={petProps} column={2} />
       )}
       {!pets[0] && (
@@ -202,6 +235,15 @@ const PetDetail = ({ customerId }: Props) => {
         drawerType={drawerType}
         customerId={customerId}
         fieldsValue={fieldsValue}
+      />
+      <AsyncModal
+        modalOpenStatus={modalOpenStatus}
+        closeModal={closeModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+        endpoint={`customers/${customerId}/pets`}
+        itemId={currentItemId}
+        setDeleted={setDeleted}
       />
     </div>
   );
