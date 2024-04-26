@@ -113,7 +113,7 @@ const AppointmentsPage = () => {
           closeDrawer={closeDrawer}
           getAppointments={getAppointments}
           drawerType={drawerType}
-          fieldsValue={fieldsValue}
+          // fieldsValue={fieldsValue}
         />
       </div>
       <GenericTable<Appointment> dataSource={appointments} columns={columns} />

@@ -10,7 +10,7 @@ interface Props {
   closeDrawer: () => void;
   getAppointments: () => void;
   drawerType?: string;
-  fieldsValue: Appointment;
+  fieldsValue?: Appointment;
 }
 
 interface Appointment {
@@ -66,12 +66,12 @@ const EditDrawer: React.FC<Props> = ({
   const [customerAndPet, setCustomerAndPet] = useState(customerAndPetEmpty);
 
   const newAppointment = {
-    appointmentTime: fieldsValue.appointmentTime,
-    customerId: fieldsValue.customerId,
-    petId: fieldsValue.petId,
-    baseServiceId: fieldsValue.baseServiceId,
-    associateId: fieldsValue.associateId,
-    remarks: fieldsValue.remarks,
+    appointmentTime: fieldsValue?.appointmentTime,
+    customerId: fieldsValue?.customerId,
+    petId: fieldsValue?.petId,
+    baseServiceId: fieldsValue?.baseServiceId,
+    associateId: fieldsValue?.associateId,
+    remarks: fieldsValue?.remarks,
   };
 
   const setCustomerPetIds = (customerId: string, petId: string) => {
@@ -96,7 +96,7 @@ const EditDrawer: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (Object.keys(fieldsValue).length === 0) {
+    if (fieldsValue && Object.keys(fieldsValue).length === 0) {
       form.resetFields();
     }
 
@@ -142,7 +142,6 @@ const EditDrawer: React.FC<Props> = ({
           appointmentTime: newAppointment.appointmentTime,
           remarks: newAppointment.remarks,
         };
-        console.log(updatedAppointment);
 
         if (fieldsValue && "id" in fieldsValue) {
           putData(`appointments/${fieldsValue.id}`, updatedAppointment).then(
