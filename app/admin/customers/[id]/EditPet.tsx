@@ -60,7 +60,6 @@ const EditDrawer: React.FC<Props> = ({
     weight: 0,
     remarks: "",
     groomRating: "",
-    rabiesDue: "",
   };
 
   const setType = (type: string) => {
@@ -99,9 +98,10 @@ const EditDrawer: React.FC<Props> = ({
         newPet.name = values.name;
         newPet.birthday = new Date(values.birthday).toISOString();
         newPet.weight = values.weight;
-        newPet.rabiesDue = new Date(values.rabiesDue).toISOString();
+
         newPet.groomRating = values.groomRating;
         newPet.remarks = values.remarks;
+        newPet.breedId = values.breed;
 
         postData(`customers/${customerId}/pets`, newPet).then(() => {
           closeDrawer();
