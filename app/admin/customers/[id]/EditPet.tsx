@@ -98,8 +98,6 @@ const EditDrawer: React.FC<Props> = ({
         newPet.name = values.name;
         newPet.birthday = new Date(values.birthday).toISOString();
         newPet.weight = values.weight;
-
-        newPet.groomRating = values.groomRating;
         newPet.remarks = values.remarks;
         newPet.breedId = values.breed;
 
@@ -124,7 +122,9 @@ const EditDrawer: React.FC<Props> = ({
             breedId: form.getFieldValue("breed"),
             birthday: new Date(values.birthday).toISOString(),
             weight: values.weight,
-            rabiesDue: new Date(values.rabiesDue).toISOString(),
+            rabiesDue: values.rabiesDue
+              ? new Date(values.rabiesDue).toISOString()
+              : undefined,
             groomRating: values.groomRating,
             remarks: values.remarks,
           };
@@ -251,13 +251,6 @@ const EditDrawer: React.FC<Props> = ({
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name="rabiesDue" label="Rabies Due Date">
-                <DatePicker />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
               <Form.Item
                 name="groomRating"
                 label="Groom Rating"
@@ -270,6 +263,15 @@ const EditDrawer: React.FC<Props> = ({
                 </Select>
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={16}>
+            {drawerType === "Edit" && (
+              <Col span={12}>
+                <Form.Item name="rabiesDue" label="Rabies Due Date">
+                  <DatePicker />
+                </Form.Item>
+              </Col>
+            )}
           </Row>
 
           <Row gutter={16}>
