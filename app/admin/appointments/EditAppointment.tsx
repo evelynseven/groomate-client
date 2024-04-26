@@ -1,23 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { postData, putData } from "@/app/api/api";
 import { Button, Col, DatePicker, Drawer, Form, Input, Row, Space } from "antd";
 import SearchSelect from "./SearchSelect";
 import CascadeSelect from "./CascadeSelect";
+import dayjs from "dayjs";
 
 interface Props {
   openStatus: boolean;
   closeDrawer: () => void;
   getAppointments: () => void;
   drawerType?: string;
-  fieldsValue: object;
+  fieldsValue: Appointment;
 }
 
 interface Appointment {
+  id: string;
   appointmentTime: string;
+  customer: string;
+  pet: string;
+  baseService: string;
+  associate: string;
   customerId: string;
   petId: string;
-  baseServiceId: string;
   associateId: string;
+  baseServiceId: string;
+  duration: number;
+  totalPrice: number;
+  status: string;
   remarks: string;
 }
 
@@ -47,14 +56,41 @@ const EditDrawer: React.FC<Props> = ({
   const [form] = Form.useForm();
   const format = "YYYY-MM-DD HH:mm";
 
+  const customerAndPetEmpty = {
+    customerId: "",
+    petId: "",
+    customer: "",
+    pet: "",
+  };
+
+  const [customerAndPet, setCustomerAndPet] = useState(customerAndPetEmpty);
+
   useEffect(() => {
     if (Object.keys(fieldsValue).length === 0) {
       form.resetFields();
     }
-    form.setFieldsValue(fieldsValue);
-  }, [fieldsValue]);
 
-  const newAppointment: Appointment = {
+    if (fieldsValue) {
+      form.setFieldValue(
+        "appointmentTime",
+        dayjs(fieldsValue.appointmentTime, "YYYY-MM-DD HH:mm")
+      );
+      form.setFieldValue("associateId", fieldsValue.associateId);
+      form.setFieldValue("baseServiceId", fieldsValue.baseServiceId);
+      form.setFieldValue("customerId", fieldsValue.customerId);
+      form.setFieldValue("petId", fieldsValue.petId);
+      form.setFieldValue("remarks", fieldsValue.remarks);
+
+      setCustomerAndPet({
+        customerId: fieldsValue.customerId,
+        petId: fieldsValue.customerId,
+        customer: fieldsValue.customer,
+        pet: fieldsValue.pet,
+      });
+    }
+  }, [openStatus, fieldsValue]);
+
+  const newAppointment = {
     appointmentTime: "",
     customerId: "",
     petId: "",
@@ -148,16 +184,21 @@ const EditDrawer: React.FC<Props> = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
+                // name="customerAndPet"
                 label="Customer and Pet"
                 rules={[
                   { required: true, message: "Please select customer and pet" },
                 ]}
               >
-                <CascadeSelect setCustomerPetIds={setCustomerPetIds} />
+                <CascadeSelect
+                  setCustomerPetIds={setCustomerPetIds}
+                  defaultValues={customerAndPet}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
+                // name="serviceId"
                 label="Service"
                 rules={[
                   { required: true, message: "Please select base service" },
@@ -166,6 +207,14 @@ const EditDrawer: React.FC<Props> = ({
                 <SearchSelect<Service>
                   endpoint="services"
                   setItemId={setServiceId}
+                  defaultValue={
+                    drawerType === "Edit" && fieldsValue
+                      ? {
+                          value: fieldsValue?.baseServiceId,
+                          label: fieldsValue?.baseService,
+                        }
+                      : undefined
+                  }
                 />
               </Form.Item>
             </Col>
@@ -173,12 +222,21 @@ const EditDrawer: React.FC<Props> = ({
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
+                name="associateId"
                 label="Associate"
                 rules={[{ required: true, message: "Please select associate" }]}
               >
                 <SearchSelect<User>
                   endpoint="users"
                   setItemId={setAssociateId}
+                  defaultValue={
+                    drawerType === "Edit" && fieldsValue
+                      ? {
+                          value: fieldsValue?.associateId,
+                          label: fieldsValue?.associate,
+                        }
+                      : undefined
+                  }
                 />
               </Form.Item>
             </Col>

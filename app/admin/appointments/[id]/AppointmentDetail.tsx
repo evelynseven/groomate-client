@@ -15,11 +15,14 @@ interface Props {
 interface Appointment {
   id: string;
   appointmentTime: string;
+  customer: string;
   pet: string;
   baseService: string;
   associate: string;
   customerId: string;
   petId: string;
+  associateId: string;
+  baseServiceId: string;
   duration: number;
   totalPrice: number;
   status: string;
@@ -33,8 +36,6 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
   const [openStatus, setOpenStatus] = useState(false);
   //control the title of the drawer
   const [drawerType, setDrawerType] = useState("");
-  //control the fields value of the drawer
-  const [fieldsValue, setFieldsValue] = useState<Appointment>();
 
   const fetchAppointment = async () => {
     try {
@@ -47,7 +48,7 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
 
   useEffect(() => {
     fetchAppointment();
-  }, []);
+  }, [openStatus]);
 
   const appointmentProps: DescriptionsProps["items"] = [
     {
@@ -103,7 +104,6 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
   const editBtnHandler = () => {
     setDrawerType("Edit");
     if (appointment) {
-      setFieldsValue(appointment);
       showDrawer();
     }
   };
@@ -147,13 +147,13 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
         </div>
       </div>
       <Descriptions layout="vertical" items={appointmentProps} column={3} />
-      {appointment && fieldsValue && (
+      {appointment && (
         <EditAppointment
           openStatus={openStatus}
           closeDrawer={closeDrawer}
           getAppointments={fetchAppointment}
           drawerType={drawerType}
-          fieldsValue={fieldsValue}
+          fieldsValue={appointment}
         />
       )}
     </div>

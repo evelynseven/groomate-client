@@ -18,9 +18,15 @@ interface Pet {
 
 interface Props {
   setCustomerPetIds: (customerId: string, petId: string) => void;
+  defaultValues?: {
+    customerId: string;
+    customer: string;
+    petId: string;
+    pet: string;
+  };
 }
 
-const CascadeSelect = ({ setCustomerPetIds }: Props) => {
+const CascadeSelect = ({ setCustomerPetIds, defaultValues }: Props) => {
   const [customerOptions, setCustomerOptions] = useState<any[]>([]);
   const [customerId, setCustomerId] = useState("");
   const [petOptions, setPetOptions] = useState<any[]>([]);
@@ -93,6 +99,14 @@ const CascadeSelect = ({ setCustomerPetIds }: Props) => {
         }
         options={customerOptions ? customerOptions : []}
         onChange={handleCustomerChange}
+        defaultValue={
+          defaultValues
+            ? {
+                value: defaultValues?.customerId,
+                label: defaultValues?.customer,
+              }
+            : undefined
+        }
       />
       <div className="h-4 w-4"></div>
       <Select
@@ -109,6 +123,14 @@ const CascadeSelect = ({ setCustomerPetIds }: Props) => {
         }
         options={petOptions ? petOptions : []}
         onChange={handlePetChange}
+        defaultValue={
+          defaultValues
+            ? {
+                value: defaultValues?.petId,
+                label: defaultValues?.pet,
+              }
+            : undefined
+        }
       />
     </div>
   );
