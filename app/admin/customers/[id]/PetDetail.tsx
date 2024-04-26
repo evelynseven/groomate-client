@@ -43,8 +43,10 @@ const PetDetail = ({ customerId }: Props) => {
   const fetchPets = async () => {
     try {
       const pets = await fetchData(`customers/${customerId}/pets`);
-      setPetList(pets);
-      setSelectedPetId(pets[0].id);
+      if (pets && pets[0]) {
+        setPetList(pets);
+        setSelectedPetId(pets[0].id);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -177,18 +179,22 @@ const PetDetail = ({ customerId }: Props) => {
     <div className="w-2/4 h-full ml-4 mr-2 py-4 px-5 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between items-center">
         <p className="font-semibold ">Pets</p>
-
-        {petList && (
-          <Dropdown menu={{ items }} placement="bottomRight" arrow>
-            <Button icon={<MoreOutlined />} shape="circle"></Button>
-          </Dropdown>
-        )}
+        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+          <Button icon={<MoreOutlined />} shape="circle"></Button>
+        </Dropdown>
       </div>
 
-      {petList && (
+      {pets[0] && (
         <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />
       )}
-      <Descriptions layout="vertical" items={petProps} column={2} />
+      {pets[0] && (
+        <Descriptions layout="vertical" items={petProps} column={2} />
+      )}
+      {!pets[0] && (
+        <div className="h-4/5 w-full flex justify-center items-center">
+          <p className="text-gray-400 text-sm">Please add a pet :)</p>
+        </div>
+      )}
       <EditPet
         openStatus={openStatus}
         closeDrawer={closeDrawer}

@@ -81,21 +81,30 @@ const AppointmentList = ({ customerId }: Props) => {
           New
         </Button>
       </div>
-      <div className="h-full pt-1 pl-2 pb-8 overflow-y-auto ">
-        {appointments &&
-          appointments.map((appointment) => {
-            return (
-              <AppointmentCard key={appointment.id} appointment={appointment} />
-            );
-          })}
-        <EditAppointment
-          openStatus={openStatus}
-          closeDrawer={closeDrawer}
-          getAppointments={fetchAppointments}
-          drawerType={drawerType}
-          fieldsValue={fieldsValue}
-        />
-      </div>
+      {!(appointments === undefined || appointments.length === 0) && (
+        <div className="h-full pt-1 pl-2 pb-8 overflow-y-auto ">
+          {appointments &&
+            appointments.map((appointment) => {
+              return (
+                <AppointmentCard
+                  key={appointment.id}
+                  appointment={appointment}
+                />
+              );
+            })}
+        </div>
+      )}
+      <EditAppointment
+        openStatus={openStatus}
+        closeDrawer={closeDrawer}
+        getAppointments={fetchAppointments}
+        drawerType={drawerType}
+      />
+      {(appointments === undefined || appointments.length === 0) && (
+        <div className="h-4/5 w-full flex justify-center items-center">
+          <p className="text-gray-400 text-sm">Please add an appointment :)</p>
+        </div>
+      )}
     </div>
   );
 };

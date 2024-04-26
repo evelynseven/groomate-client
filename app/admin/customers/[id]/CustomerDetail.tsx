@@ -7,6 +7,7 @@ import type { DescriptionsProps, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import EditCustomer from "../EditCustomer";
 import Link from "next/link";
+import AsyncModal from "@/app/components/AsyncModal";
 
 interface Props {
   customerId: string;
@@ -31,6 +32,14 @@ const CustomerDetail = ({ customerId }: Props) => {
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState<Customer>();
+  //control the async modal
+  const [modalOpenStatus, setModalOpenStatus] = useState(false);
+  //control the modal title
+  const [modalTitle, setModalTitle] = useState("");
+  //control the modal text
+  const [modalText, setModalText] = useState("");
+  //update the current item
+  const [currentItemId, setCurrentItemId] = useState("");
 
   const fetchCustomer = async () => {
     try {
@@ -85,6 +94,24 @@ const CustomerDetail = ({ customerId }: Props) => {
     }
   };
 
+  const deleteBtnHandler = () => {
+    setModalTitle("Delete Confirmation");
+    if (customer) {
+      setModalText(`Confirm to delete customer "${customer.fullName}"?`);
+    }
+    setCurrentItemId(customerId);
+
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+  };
+
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -94,9 +121,9 @@ const CustomerDetail = ({ customerId }: Props) => {
       key: "2",
       label: (
         <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
+          onClick={() => {
+            deleteBtnHandler();
+          }}
         >
           Delete
         </a>
@@ -128,6 +155,14 @@ const CustomerDetail = ({ customerId }: Props) => {
           fieldsValue={fieldsValue}
         />
       )}
+      <AsyncModal
+        modalOpenStatus={modalOpenStatus}
+        closeModal={closeModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+        endpoint="users"
+        itemId={currentItemId}
+      />
     </div>
   );
 };
