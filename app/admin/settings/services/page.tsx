@@ -34,7 +34,7 @@ const ServicesPage = () => {
     },
     {
       title: "Remarks",
-      dataIndex: "remark",
+      dataIndex: "remarks",
       key: "remarks",
       render: (text: string) => <a>{text ? text : "--"}</a>,
     },
