@@ -80,8 +80,6 @@ const CustomerDetail = ({ customerId }: Props) => {
     setDrawerType("Edit");
     if (customer) {
       setFieldsValue(customer);
-      // console.log(customer);
-
       showDrawer();
     }
   };

@@ -8,6 +8,7 @@ import dateFormatter from "@/app/utils/dateFormatter/dateFormatter";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import EditPet from "./EditPet";
 
 interface Props {
   customerId: string;
@@ -23,12 +24,21 @@ interface Pet {
   groomRating: string;
   remarks: string;
   rabiesDue: string;
+  ownerId: string;
+  breedId: string;
 }
 
 const PetDetail = ({ customerId }: Props) => {
   const [petList, setPetList] = useState<Pet[]>();
   const [selectedPetId, setSelectedPetId] = useState("");
   const [pet, setPet] = useState<Pet>();
+
+  //control the opening of the drawer
+  const [openStatus, setOpenStatus] = useState(false);
+  //control the title of the drawer
+  const [drawerType, setDrawerType] = useState("");
+  //control the fields value of the drawer
+  const [fieldsValue, setFieldsValue] = useState<Pet>();
 
   const fetchPets = async () => {
     try {
@@ -64,7 +74,7 @@ const PetDetail = ({ customerId }: Props) => {
 
   useEffect(() => {
     fetchPets();
-  }, []);
+  }, [openStatus]);
 
   useEffect(() => {
     fetchPet();
@@ -110,34 +120,44 @@ const PetDetail = ({ customerId }: Props) => {
       key: "7",
       label: "Rabies Due Date",
       span: 2,
-      children: pet?.rabiesDue ? pet?.rabiesDue : "--",
+      children: pet?.rabiesDue
+        ? typeof pet?.rabiesDue === "string"
+          ? dateFormatter(pet?.rabiesDue)
+          : pet?.rabiesDue
+        : "--",
     },
   ];
+
+  const showDrawer = () => {
+    setOpenStatus(true);
+  };
+
+  const closeDrawer = () => {
+    setOpenStatus(false);
+  };
+
+  const addBtnHandler = () => {
+    setDrawerType("Create");
+    // setFieldsValue({});
+    showDrawer();
+  };
+
+  const editBtnHandler = () => {
+    setDrawerType("Edit");
+    if (pet) {
+      setFieldsValue(pet);
+      showDrawer();
+    }
+  };
 
   const items: MenuProps["items"] = [
     {
       key: "1",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          Add
-        </a>
-      ),
+      label: <a onClick={addBtnHandler}>Add</a>,
     },
     {
       key: "2",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.antgroup.com"
-        >
-          Edit
-        </a>
-      ),
+      label: <a onClick={editBtnHandler}>Edit</a>,
     },
     {
       key: "3",
@@ -170,6 +190,14 @@ const PetDetail = ({ customerId }: Props) => {
         <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />
       )}
       <Descriptions layout="vertical" items={petProps} column={2} />
+      <EditPet
+        openStatus={openStatus}
+        closeDrawer={closeDrawer}
+        getPets={fetchPet}
+        drawerType={drawerType}
+        customerId={customerId}
+        fieldsValue={fieldsValue}
+      />
     </div>
   );
 };
