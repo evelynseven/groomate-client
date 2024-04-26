@@ -5,6 +5,7 @@ import { fetchData } from "../../../api/api";
 import AppointmentCard from "./AppointmentCard";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import EditAppointment from "../../appointments/EditAppointment";
 
 interface Props {
   customerId: string;
@@ -17,11 +18,19 @@ interface Appointment {
   baseService: string;
   associate: string;
   status: string;
+  customerId: string;
+  petId: string;
   remarks: string;
 }
 
 const AppointmentList = ({ customerId }: Props) => {
   const [appointments, setAppointments] = useState<Appointment[]>();
+  //control the opening of the drawer
+  const [openStatus, setOpenStatus] = useState(false);
+  //control the title of the drawer
+  const [drawerType, setDrawerType] = useState("");
+  //control the fields value of the drawer
+  const [fieldsValue, setFieldsValue] = useState({});
 
   const fetchAppointments = async () => {
     try {
@@ -36,13 +45,39 @@ const AppointmentList = ({ customerId }: Props) => {
 
   useEffect(() => {
     fetchAppointments();
-  }, []);
+  }, [openStatus]);
+
+  const showDrawer = () => {
+    setOpenStatus(true);
+  };
+
+  const closeDrawer = () => {
+    setOpenStatus(false);
+  };
+
+  const addBtnHandler = () => {
+    setDrawerType("Create");
+    setFieldsValue({});
+    showDrawer();
+  };
+
+  const editBtnHandler = (record: Appointment) => {
+    setDrawerType("Edit");
+    setFieldsValue(record);
+    showDrawer();
+  };
 
   return (
     <div className="w-1/4 h-full overflow-hidden">
       <div className="flex justify-between m-2 items-center">
         <p className="font-semibold">Appointments</p>
-        <Button icon={<PlusOutlined />} shape="round" type="link">
+        <Button
+          onClick={addBtnHandler}
+          icon={<PlusOutlined />}
+          shape="round"
+          type="link"
+        >
+          {" "}
           New
         </Button>
       </div>
@@ -53,6 +88,13 @@ const AppointmentList = ({ customerId }: Props) => {
               <AppointmentCard key={appointment.id} appointment={appointment} />
             );
           })}
+        <EditAppointment
+          openStatus={openStatus}
+          closeDrawer={closeDrawer}
+          getAppointments={fetchAppointments}
+          drawerType={drawerType}
+          fieldsValue={fieldsValue}
+        />
       </div>
     </div>
   );

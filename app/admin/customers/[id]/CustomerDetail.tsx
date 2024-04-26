@@ -6,6 +6,7 @@ import { Button, Descriptions, Dropdown } from "antd";
 import type { DescriptionsProps, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import EditCustomer from "../EditCustomer";
+import Link from "next/link";
 
 interface Props {
   customerId: string;
@@ -107,9 +108,12 @@ const CustomerDetail = ({ customerId }: Props) => {
   return (
     <div className="w-1/4 h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="flex justify-between mb-4 items-center">
-        <p className="font-semibold text-xl">
+        <Link
+          href={`/admin/customers/${customer ? customer.id : ""}`}
+          className="font-semibold text-xl text-blue-500"
+        >
           {customer ? customer.fullName : "Customer"}
-        </p>
+        </Link>
         <Dropdown menu={{ items }} placement="bottomRight" arrow>
           <Button icon={<MoreOutlined />} shape="circle"></Button>
         </Dropdown>

@@ -5,13 +5,12 @@ import { fetchData } from "../../../api/api";
 import { Button, Descriptions, Dropdown } from "antd";
 import type { DescriptionsProps, MenuProps } from "antd";
 import dateFormatter from "@/app/utils/dateFormatter/dateFormatter";
-import { Tabs } from "antd";
-import type { TabsProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import EditPet from "./EditPet";
+import EditPet from "../../customers/[id]/EditPet";
 
 interface Props {
   customerId: string;
+  petId: string;
 }
 
 interface Pet {
@@ -28,9 +27,7 @@ interface Pet {
   breedId: string;
 }
 
-const PetDetail = ({ customerId }: Props) => {
-  const [petList, setPetList] = useState<Pet[]>();
-  const [selectedPetId, setSelectedPetId] = useState("");
+const SinglePetDetail = ({ customerId, petId }: Props) => {
   const [pet, setPet] = useState<Pet>();
 
   //control the opening of the drawer
@@ -40,32 +37,9 @@ const PetDetail = ({ customerId }: Props) => {
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState<Pet>();
 
-  const fetchPets = async () => {
-    try {
-      const pets = await fetchData(`customers/${customerId}/pets`);
-      setPetList(pets);
-      setSelectedPetId(pets[0].id);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  let pets: TabsProps["items"] = [];
-  if (petList) {
-    pets = petList.map((pet) => {
-      return { key: pet.id, label: pet.name };
-    });
-  }
-
-  const onChange = (key: string) => {
-    setSelectedPetId(key);
-  };
-
   const fetchPet = async () => {
     try {
-      const pet = await fetchData(
-        `customers/${customerId}/pets/${selectedPetId}`
-      );
+      const pet = await fetchData(`customers/${customerId}/pets/${petId}`);
       setPet(pet);
     } catch (error) {
       console.error(error);
@@ -73,12 +47,8 @@ const PetDetail = ({ customerId }: Props) => {
   };
 
   useEffect(() => {
-    fetchPets();
-  }, [openStatus]);
-
-  useEffect(() => {
     fetchPet();
-  }, [selectedPetId]);
+  }, []);
 
   const petProps: DescriptionsProps["items"] = [
     {
@@ -107,24 +77,22 @@ const PetDetail = ({ customerId }: Props) => {
     {
       key: "5",
       label: "GroomRating",
-      span: 2,
       children: pet?.groomRating,
-    },
-    {
-      key: "6",
-      label: "Note",
-      span: 2,
-      children: pet?.remarks ? pet?.remarks : "--",
     },
     {
       key: "7",
       label: "Rabies Due Date",
-      span: 2,
       children: pet?.rabiesDue
         ? typeof pet?.rabiesDue === "string"
           ? dateFormatter(pet?.rabiesDue)
           : pet?.rabiesDue
         : "--",
+    },
+    {
+      key: "6",
+      label: "Note",
+      span: 3,
+      children: pet?.remarks ? pet?.remarks : "--",
     },
   ];
 
@@ -151,10 +119,6 @@ const PetDetail = ({ customerId }: Props) => {
 
   const items: MenuProps["items"] = [
     {
-      key: "1",
-      label: <a onClick={addBtnHandler}>Add</a>,
-    },
-    {
       key: "2",
       label: <a onClick={editBtnHandler}>Edit</a>,
     },
@@ -174,21 +138,14 @@ const PetDetail = ({ customerId }: Props) => {
   ];
 
   return (
-    <div className="w-2/4 h-full ml-4 mr-2 py-4 px-5 bg-white shadow-lg rounded-lg">
-      <div className="flex justify-between items-center">
-        <p className="font-semibold ">Pets</p>
-
-        {petList && (
-          <Dropdown menu={{ items }} placement="bottomRight" arrow>
-            <Button icon={<MoreOutlined />} shape="circle"></Button>
-          </Dropdown>
-        )}
+    <div className="h-1/2 ml-4 mb-4 py-4 px-5 bg-white shadow-lg rounded-lg overflow-y-auto overflow-hidden">
+      <div className="flex justify-between items-center mb-2">
+        <p className="font-semibold ">{pet?.name}</p>
+        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+          <Button icon={<MoreOutlined />} shape="circle"></Button>
+        </Dropdown>
       </div>
-
-      {petList && (
-        <Tabs defaultActiveKey="1" items={pets} onChange={onChange} />
-      )}
-      <Descriptions layout="vertical" items={petProps} column={2} />
+      <Descriptions layout="vertical" items={petProps} column={3} />
       <EditPet
         openStatus={openStatus}
         closeDrawer={closeDrawer}
@@ -201,4 +158,4 @@ const PetDetail = ({ customerId }: Props) => {
   );
 };
 
-export default PetDetail;
+export default SinglePetDetail;
