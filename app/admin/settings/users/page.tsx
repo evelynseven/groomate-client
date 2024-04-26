@@ -35,6 +35,11 @@ const UsersPage = () => {
       key: "email",
     },
     {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
       title: "Remarks",
       dataIndex: "remarks",
       key: "remarks",

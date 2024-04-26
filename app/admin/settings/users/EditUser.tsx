@@ -145,8 +145,21 @@ const EditDrawer: React.FC<Props> = ({
               </Form.Item>
             </Col>
           </Row>
-          {drawerType !== "Edit" && (
-            <Row gutter={16}>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="role"
+                label="Role"
+                rules={[{ required: true, message: "Please select role" }]}
+              >
+                <Select placeholder="Please select breed type">
+                  <Option value="ASSOCIATE">Associate</Option>
+                  <Option value="MANAGER">Manager</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            {drawerType !== "Edit" && (
               <Col span={12}>
                 <Form.Item
                   name="password"
@@ -162,8 +175,23 @@ const EditDrawer: React.FC<Props> = ({
                   />
                 </Form.Item>
               </Col>
-            </Row>
-          )}
+            )}
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                name="address"
+                label="Address"
+                rules={[
+                  {
+                    message: "Please enter address",
+                  },
+                ]}
+              >
+                <Input placeholder="Please enter address" autoComplete="off" />
+              </Form.Item>
+            </Col>
+          </Row>
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
