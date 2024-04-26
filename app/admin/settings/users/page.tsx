@@ -7,6 +7,7 @@ import TableHeader from "@/app/components/TableHeader";
 import { Button, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditUser from "./EditUser";
+import AsyncModal from "@/app/components/AsyncModal";
 
 interface User {
   id: string;
@@ -52,6 +53,14 @@ const UsersPage = () => {
           >
             Edit
           </a>
+          <a
+            onClick={() => {
+              deleteBtnHandler(record);
+            }}
+            className="text-rose-500 hover:text-rose-400"
+          >
+            Delete
+          </a>
         </Space>
       ),
     },
@@ -59,13 +68,20 @@ const UsersPage = () => {
 
   //control the table data
   const [users, setUsers] = useState<User[]>([]);
-
   //control the opening of the drawer
   const [openStatus, setOpenStatus] = useState(false);
   //control the title of the drawer
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState({});
+  //control the async modal
+  const [modalOpenStatus, setModalOpenStatus] = useState(false);
+  //control the modal title
+  const [modalTitle, setModalTitle] = useState("");
+  //control the modal text
+  const [modalText, setModalText] = useState("");
+  //update the current item
+  const [currentItemId, setCurrentItemId] = useState("");
 
   const getUsers = async () => {
     try {
@@ -78,7 +94,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [modalOpenStatus]);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -100,6 +116,21 @@ const UsersPage = () => {
     showDrawer();
   };
 
+  const deleteBtnHandler = (record: User) => {
+    setModalTitle("Delete Confirmation");
+    setModalText(`Confirm to delete user "${record.fullName}"?`);
+    setCurrentItemId(record.id);
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+  };
+
   return (
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
@@ -116,6 +147,14 @@ const UsersPage = () => {
         />
       </div>
       <GenericTable<User> dataSource={users} columns={columns} />
+      <AsyncModal
+        modalOpenStatus={modalOpenStatus}
+        closeModal={closeModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+        endpoint="users"
+        itemId={currentItemId}
+      />
     </div>
   );
 };

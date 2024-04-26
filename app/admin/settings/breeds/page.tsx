@@ -117,7 +117,7 @@ const BreedsPage = () => {
 
   const deleteBtnHandler = (record: Breed) => {
     setModalTitle("Delete Confirmation");
-    setModalText(`Confirm to delete service "${record.name}"?`);
+    setModalText(`Confirm to delete breed "${record.name}"?`);
     setCurrentItemId(record.id);
     showModal();
   };
