@@ -6,6 +6,7 @@ import { fetchData } from "@/app/api/api";
 import { Button, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditBreed from "./EditBreed";
+import AsyncModal from "@/app/components/AsyncModal";
 
 interface Breed {
   id: string;
@@ -51,6 +52,14 @@ const BreedsPage = () => {
           >
             Edit
           </a>
+          <a
+            onClick={() => {
+              deleteBtnHandler(record);
+            }}
+            className="text-rose-500 hover:text-rose-400"
+          >
+            Delete
+          </a>
         </Space>
       ),
     },
@@ -64,6 +73,14 @@ const BreedsPage = () => {
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState({});
+  //control the async modal
+  const [modalOpenStatus, setModalOpenStatus] = useState(false);
+  //control the modal title
+  const [modalTitle, setModalTitle] = useState("");
+  //control the modal text
+  const [modalText, setModalText] = useState("");
+  //update the current item
+  const [currentItemId, setCurrentItemId] = useState("");
 
   const getBreeds = async () => {
     try {
@@ -76,7 +93,7 @@ const BreedsPage = () => {
 
   useEffect(() => {
     getBreeds();
-  }, []);
+  }, [modalOpenStatus]);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -98,6 +115,21 @@ const BreedsPage = () => {
     showDrawer();
   };
 
+  const deleteBtnHandler = (record: Breed) => {
+    setModalTitle("Delete Confirmation");
+    setModalText(`Confirm to delete service "${record.name}"?`);
+    setCurrentItemId(record.id);
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+  };
+
   return (
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
@@ -114,6 +146,14 @@ const BreedsPage = () => {
         />
       </div>
       <GenericTable<Breed> dataSource={breeds} columns={columns} />
+      <AsyncModal
+        modalOpenStatus={modalOpenStatus}
+        closeModal={closeModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+        endpoint="breeds"
+        itemId={currentItemId}
+      />
     </div>
   );
 };
