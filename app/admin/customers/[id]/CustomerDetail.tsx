@@ -11,6 +11,7 @@ import AsyncModal from "@/app/components/AsyncModal";
 
 interface Props {
   customerId: string;
+  redirect: () => void;
 }
 
 interface Customer {
@@ -24,7 +25,7 @@ interface Customer {
   address: string;
 }
 
-const CustomerDetail = ({ customerId }: Props) => {
+const CustomerDetail = ({ customerId, redirect }: Props) => {
   const [customer, setCustomer] = useState<Customer>();
   //control the opening of the drawer
   const [openStatus, setOpenStatus] = useState(false);
@@ -40,6 +41,8 @@ const CustomerDetail = ({ customerId }: Props) => {
   const [modalText, setModalText] = useState("");
   //update the current item
   const [currentItemId, setCurrentItemId] = useState("");
+  //update the delete status
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const fetchCustomer = async () => {
     try {
@@ -50,9 +53,19 @@ const CustomerDetail = ({ customerId }: Props) => {
     }
   };
 
+  const setDeleted = () => {
+    setIsDeleted(true);
+  };
+
   useEffect(() => {
     fetchCustomer();
   }, [openStatus]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      redirect();
+    }
+  }, [modalOpenStatus]);
 
   const customerProps: DescriptionsProps["items"] = [
     {
@@ -160,8 +173,9 @@ const CustomerDetail = ({ customerId }: Props) => {
         closeModal={closeModal}
         modalTitle={modalTitle}
         modalText={modalText}
-        endpoint="users"
+        endpoint="customers"
         itemId={currentItemId}
+        setDeleted={setDeleted}
       />
     </div>
   );

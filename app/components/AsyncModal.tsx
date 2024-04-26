@@ -9,6 +9,7 @@ interface Props {
   closeModal: () => void;
   endpoint: string;
   itemId: string;
+  setDeleted?: () => void;
 }
 
 const AsyncModal = ({
@@ -18,6 +19,7 @@ const AsyncModal = ({
   closeModal,
   endpoint,
   itemId,
+  setDeleted,
 }: Props) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -25,6 +27,7 @@ const AsyncModal = ({
     setConfirmLoading(true);
     try {
       deleteData(`${endpoint}/${itemId}`);
+      setDeleted ? setDeleted() : "";
       closeModal();
     } catch (error) {
       console.error(error);
