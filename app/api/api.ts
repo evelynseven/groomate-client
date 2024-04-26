@@ -34,4 +34,12 @@ const putData = async (endpoint: string, data: object) => {
   }
 };
 
-export { fetchData, postData, putData };
+const deleteData = async (endpoint: string) => {
+  try {
+    await axios.delete(`${baseUrl}/${endpoint}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { fetchData, postData, putData, deleteData };

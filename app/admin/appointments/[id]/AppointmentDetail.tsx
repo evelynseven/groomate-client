@@ -132,8 +132,10 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
     <div className="ml-4 mb-4 py-4 px-5 bg-white shadow-lg rounded-lg overflow-y-auto overflow-hidden">
       <div className="flex justify-between items-center mb-2">
         <div className="flex">
-          <p className="font-semibold mr-2">{appointment?.baseService}</p>
-          <p className="bg-sky-100 rounded-full text-xs p-1 px-2">
+          <p className="font-semibold text-xl mr-2">
+            {appointment?.baseService}
+          </p>
+          <p className="bg-sky-100 font-semibold rounded-full text-sm text-sky-600 p-1 px-2">
             {appointment?.status}
           </p>
         </div>

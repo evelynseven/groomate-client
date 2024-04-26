@@ -6,6 +6,7 @@ import { fetchData } from "@/app/api/api";
 import { Button, Space } from "antd";
 import EditAddon from "./EditAddon";
 import { PlusOutlined } from "@ant-design/icons";
+import AsyncModal from "@/app/components/AsyncModal";
 
 interface Addon {
   id: string;
@@ -28,7 +29,7 @@ const AddonsPage = () => {
       key: "nameAbbrev",
     },
     {
-      title: "Price",
+      title: "Price (CAD)",
       dataIndex: "price",
       key: "price",
     },
@@ -51,6 +52,14 @@ const AddonsPage = () => {
           >
             Edit
           </a>
+          <a
+            onClick={() => {
+              deleteBtnHandler(record);
+            }}
+            className="text-rose-500 hover:text-rose-400"
+          >
+            Delete
+          </a>
         </Space>
       ),
     },
@@ -64,6 +73,14 @@ const AddonsPage = () => {
   const [drawerType, setDrawerType] = useState("");
   //control the fields value of the drawer
   const [fieldsValue, setFieldsValue] = useState({});
+  //control the async modal
+  const [modalOpenStatus, setModalOpenStatus] = useState(false);
+  //control the modal title
+  const [modalTitle, setModalTitle] = useState("");
+  //control the modal text
+  const [modalText, setModalText] = useState("");
+  //update the current item
+  const [currentItemId, setCurrentItemId] = useState("");
 
   const getAddons = async () => {
     try {
@@ -76,7 +93,7 @@ const AddonsPage = () => {
 
   useEffect(() => {
     getAddons();
-  }, []);
+  }, [modalOpenStatus]);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -98,6 +115,21 @@ const AddonsPage = () => {
     showDrawer();
   };
 
+  const deleteBtnHandler = (record: Addon) => {
+    setModalTitle("Delete Confirmation");
+    setModalText(`Confirm to delete addon "${record.name}"?`);
+    setCurrentItemId(record.id);
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+  };
+
   return (
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
@@ -114,6 +146,14 @@ const AddonsPage = () => {
         />
       </div>
       <GenericTable<Addon> dataSource={addons} columns={columns} />
+      <AsyncModal
+        modalOpenStatus={modalOpenStatus}
+        closeModal={closeModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+        endpoint="addons"
+        itemId={currentItemId}
+      />
     </div>
   );
 };
