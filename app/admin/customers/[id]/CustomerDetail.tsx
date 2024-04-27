@@ -11,7 +11,7 @@ import AsyncModal from "@/app/components/AsyncModal";
 
 interface Props {
   customerId: string;
-  redirect: () => void;
+  redirect?: () => void;
 }
 
 interface Customer {
@@ -63,7 +63,7 @@ const CustomerDetail = ({ customerId, redirect }: Props) => {
 
   useEffect(() => {
     if (isDeleted) {
-      redirect();
+      redirect?.();
     }
   }, [modalOpenStatus]);
 
