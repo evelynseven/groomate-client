@@ -7,7 +7,7 @@ interface Props {
   closeDrawer: () => void;
   getCustomers: () => void;
   drawerType?: string;
-  fieldsValue: Customer;
+  fieldsValue?: Customer;
 }
 
 interface Customer {
@@ -39,7 +39,7 @@ const EditDrawer: React.FC<Props> = ({
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (Object.keys(fieldsValue).length === 0) {
+    if (fieldsValue && Object.keys(fieldsValue).length === 0) {
       form.resetFields();
     }
     form.setFieldsValue(fieldsValue);

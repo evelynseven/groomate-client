@@ -103,7 +103,7 @@ const CustomersPage = () => {
           closeDrawer={closeDrawer}
           getCustomers={getCustomers}
           drawerType={drawerType}
-          fieldsValue={fieldsValue}
+          // fieldsValue={fieldsValue}
         />
       </div>
       <GenericTable<Customer> dataSource={customers} columns={columns} />
