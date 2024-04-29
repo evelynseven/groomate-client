@@ -2,8 +2,18 @@ import React from "react";
 import { SettingOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const NavBar = () => {
+  const router = useRouter();
+  const redirect = () => {
+    router.replace("/login");
+  };
+  const logoutHandler = () => {
+    sessionStorage.removeItem("access_token");
+    redirect();
+  };
+
   return (
     <div className="navbar bg-base-100 fixed top-0 left-0 right-0 z-10">
       <div className="flex-1">
@@ -17,18 +27,29 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="flex-none">
-        <div
-          tabIndex={0}
-          role="button"
-          className="btn btn-ghost btn-circle avatar"
-        >
-          <div className="w-10 rounded-full">
-            <img
-              alt="user profile picture"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            />
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle avatar"
+          >
+            <div className="w-10 rounded-full">
+              <img
+                alt="user profile picture"
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              />
+            </div>
           </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-24"
+          >
+            <li>
+              <a onClick={logoutHandler}>Logout</a>
+            </li>
+          </ul>
         </div>
+
         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
           <Link href="/admin/dashboard">
             <SettingOutlined />

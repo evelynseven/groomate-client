@@ -1,12 +1,31 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 import Image from "next/image";
+import { postData } from "@/app/api/api";
+import { useRouter } from "next/navigation";
 
 const LoginPage: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const router = useRouter();
+  const redirect = () => {
+    router.replace("/admin/customers");
+  };
+  useEffect(() => {
+    const access_token = sessionStorage.getItem("access_token");
+    if (access_token) {
+      redirect();
+    }
+  }, []);
+
+  const onFinish = async (values: any) => {
+    try {
+      const response = await postData("auth/login", values);
+      sessionStorage.setItem("access_token", response.access_token);
+      redirect();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -22,7 +41,7 @@ const LoginPage: React.FC = () => {
         }}
       />
 
-      <div className="w-80 bg-white/[.90] shadow-lg rounded-xl px-12 pt-8 pb-8">
+      <div className="w-80 bg-white/[.90] shadow-lg rounded-xl px-14 pt-8 pb-8">
         <Image
           src="/groomate-logo-transparent.png"
           width={200}
@@ -37,12 +56,12 @@ const LoginPage: React.FC = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Please input your username" }]}
+            name="email"
+            rules={[{ required: true, message: "Please input your email" }]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon h-8" />}
-              placeholder="Username"
+              placeholder="Email"
             />
           </Form.Item>
           <Form.Item

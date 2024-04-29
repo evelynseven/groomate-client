@@ -85,12 +85,6 @@ const CustomersPage = () => {
     showDrawer();
   };
 
-  const editBtnHandler = (record: Customer) => {
-    setDrawerType("Edit");
-    setFieldsValue(record);
-    showDrawer();
-  };
-
   return (
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
@@ -103,7 +97,6 @@ const CustomersPage = () => {
           closeDrawer={closeDrawer}
           getCustomers={getCustomers}
           drawerType={drawerType}
-          // fieldsValue={fieldsValue}
         />
       </div>
       <GenericTable<Customer> dataSource={customers} columns={columns} />
