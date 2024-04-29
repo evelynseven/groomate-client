@@ -24,7 +24,6 @@ const UsersPage = () => {
   if (access_token) {
     const decoded = jwtDecode(access_token) as { role: string };
     userRole = decoded.role;
-    console.log(decoded.role);
   }
 
   //control the table data
