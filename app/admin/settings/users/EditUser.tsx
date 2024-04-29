@@ -39,7 +39,7 @@ const EditDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        values.phoneNumber = `+1${values.phoneNumber}`;
+        values.phoneNumber = values.phoneNumber.replace(/\s/g, "");
         postData("users", values).then(() => {
           closeDrawer();
           getUsers();

@@ -49,11 +49,10 @@ const EditDrawer: React.FC<Props> = ({
     form
       .validateFields()
       .then(async (values) => {
-        values.phoneNumber = `${values.phoneNumber}`;
         const customer = {
           firstName: values.firstName,
           lastName: values.lastName,
-          phoneNumber: values.phoneNumber,
+          phoneNumber: values.phoneNumber.replace(/\s/g, ""),
           email: values.email,
           remarks: values.remarks,
         };

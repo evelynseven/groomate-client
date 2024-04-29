@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
         }}
       />
 
-      <div className="w-80 bg-white/[.90] shadow-lg rounded-xl px-14 pt-8 pb-8">
+      <div className="w-96 bg-white/[.90] shadow-lg rounded-xl px-14 pt-8 pb-8">
         <Image
           src="/groomate-logo-transparent.png"
           width={200}
