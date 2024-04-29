@@ -12,6 +12,7 @@ import AsyncModal from "@/app/components/AsyncModal";
 interface Props {
   customerId: string;
   redirect?: () => void;
+  showDelete?: boolean;
 }
 
 interface Customer {
@@ -25,7 +26,7 @@ interface Customer {
   address: string;
 }
 
-const CustomerDetail = ({ customerId, redirect }: Props) => {
+const CustomerDetail = ({ customerId, redirect, showDelete = true }: Props) => {
   const [customer, setCustomer] = useState<Customer>();
   //control the opening of the drawer
   const [openStatus, setOpenStatus] = useState(false);
@@ -125,25 +126,32 @@ const CustomerDetail = ({ customerId, redirect }: Props) => {
     setModalOpenStatus(false);
   };
 
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: <a onClick={editBtnHandler}>Edit</a>,
-    },
-    {
-      key: "2",
-      label: (
-        <a
-          onClick={() => {
-            deleteBtnHandler();
-          }}
-        >
-          Delete
-        </a>
-      ),
-      danger: true,
-    },
-  ];
+  const items: MenuProps["items"] = showDelete
+    ? [
+        {
+          key: "1",
+          label: <a onClick={editBtnHandler}>Edit</a>,
+        },
+        {
+          key: "2",
+          label: (
+            <a
+              onClick={() => {
+                deleteBtnHandler();
+              }}
+            >
+              Delete
+            </a>
+          ),
+          danger: true,
+        },
+      ]
+    : [
+        {
+          key: "1",
+          label: <a onClick={editBtnHandler}>Edit</a>,
+        },
+      ];
 
   return (
     <div className="w-1/4 h-full p-5 bg-white shadow-lg rounded-lg">

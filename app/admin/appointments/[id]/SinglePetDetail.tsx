@@ -119,21 +119,8 @@ const SinglePetDetail = ({ customerId, petId }: Props) => {
 
   const items: MenuProps["items"] = [
     {
-      key: "2",
+      key: "1",
       label: <a onClick={editBtnHandler}>Edit</a>,
-    },
-    {
-      key: "3",
-      label: (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
-        >
-          Delete
-        </a>
-      ),
-      danger: true,
     },
   ];
 

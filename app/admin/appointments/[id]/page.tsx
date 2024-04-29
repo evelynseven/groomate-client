@@ -40,7 +40,12 @@ const AppointmentDetailPage = ({ params: { id } }: Props) => {
 
   return (
     <div className="h-full w-full flex justify-between">
-      {appointment && <CustomerDetail customerId={appointment.customerId} />}
+      {appointment && (
+        <CustomerDetail
+          customerId={appointment.customerId}
+          showDelete={false}
+        />
+      )}
       <div className="w-3/4 h-full">
         {appointment && <AppointmentDetail appointmentId={appointment.id} />}
         {appointment && (
