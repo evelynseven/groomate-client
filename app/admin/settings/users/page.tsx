@@ -8,6 +8,7 @@ import { Button, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import EditUser from "./EditUser";
 import AsyncModal from "@/app/components/AsyncModal";
+import { jwtDecode } from "jwt-decode";
 
 interface User {
   id: string;
@@ -18,58 +19,13 @@ interface User {
 }
 
 const UsersPage = () => {
-  const columns = [
-    {
-      title: "Full Name",
-      dataIndex: "fullName",
-      key: "fullName",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-    },
-    {
-      title: "Remarks",
-      dataIndex: "remarks",
-      key: "remarks",
-      render: (text: string) => <a>{text ? text : "--"}</a>,
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (_text: string, record: User) => (
-        <Space size="middle">
-          <a
-            onClick={() => {
-              editBtnHandler(record);
-            }}
-            className="text-blue-500"
-          >
-            Edit
-          </a>
-          <a
-            onClick={() => {
-              deleteBtnHandler(record);
-            }}
-            className="text-rose-500 hover:text-rose-400"
-          >
-            Delete
-          </a>
-        </Space>
-      ),
-    },
-  ];
+  const access_token = sessionStorage.getItem("access_token");
+  let userRole = "";
+  if (access_token) {
+    const decoded = jwtDecode(access_token) as { role: string };
+    userRole = decoded.role;
+    console.log(decoded.role);
+  }
 
   //control the table data
   const [users, setUsers] = useState<User[]>([]);
@@ -135,6 +91,65 @@ const UsersPage = () => {
   const closeModal = () => {
     setModalOpenStatus(false);
   };
+
+  const columns = [
+    {
+      title: "Full Name",
+      dataIndex: "fullName",
+      key: "fullName",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Remarks",
+      dataIndex: "remarks",
+      key: "remarks",
+      render: (text: string) => <a>{text ? text : "--"}</a>,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_text: string, record: User) => (
+        <Space size="middle">
+          <Button
+            type="link"
+            onClick={() => {
+              editBtnHandler(record);
+            }}
+            disabled={userRole === "ADMIN" ? false : true}
+            className="px-0"
+          >
+            Edit
+          </Button>
+
+          <Button
+            type="link"
+            onClick={() => {
+              deleteBtnHandler(record);
+            }}
+            danger
+            disabled={userRole === "ADMIN" ? false : true}
+            className="px-0"
+          >
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
