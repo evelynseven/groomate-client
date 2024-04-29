@@ -5,6 +5,7 @@ import CustomerDetail from "../../customers/[id]/CustomerDetail";
 import { fetchData } from "@/app/api/api";
 import AppointmentDetail from "./AppointmentDetail";
 import SinglePetDetail from "./SinglePetDetail";
+import { useRouter } from "next/navigation";
 
 interface Props {
   params: { id: string };
@@ -24,6 +25,10 @@ interface Appointment {
 
 const AppointmentDetailPage = ({ params: { id } }: Props) => {
   const [appointment, setAppointment] = useState<Appointment>();
+  const router = useRouter();
+  const redirect = () => {
+    router.replace("/admin/appointments");
+  };
 
   const fetchAppointment = async () => {
     try {
@@ -47,7 +52,12 @@ const AppointmentDetailPage = ({ params: { id } }: Props) => {
         />
       )}
       <div className="w-3/4 h-full">
-        {appointment && <AppointmentDetail appointmentId={appointment.id} />}
+        {appointment && (
+          <AppointmentDetail
+            appointmentId={appointment.id}
+            redirect={redirect}
+          />
+        )}
         {appointment && (
           <SinglePetDetail
             customerId={appointment.customerId}

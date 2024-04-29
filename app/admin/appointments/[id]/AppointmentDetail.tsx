@@ -7,9 +7,11 @@ import type { DescriptionsProps, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import EditAppointment from "../EditAppointment";
 import dateTimeFormatter from "@/app/utils/dateTimeFormatter/dateTimeFormatter";
+import AsyncModal from "@/app/components/AsyncModal";
 
 interface Props {
   appointmentId: string;
+  redirect?: () => void;
 }
 
 interface Appointment {
@@ -29,13 +31,23 @@ interface Appointment {
   remarks: string;
 }
 
-const AppointmentDetail = ({ appointmentId }: Props) => {
+const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
   const [appointment, setAppointment] = useState<Appointment>();
 
   //control the opening of the drawer
   const [openStatus, setOpenStatus] = useState(false);
   //control the title of the drawer
   const [drawerType, setDrawerType] = useState("");
+  //control the async modal
+  const [modalOpenStatus, setModalOpenStatus] = useState(false);
+  //control the modal title
+  const [modalTitle, setModalTitle] = useState("");
+  //control the modal text
+  const [modalText, setModalText] = useState("");
+  //update the current item
+  const [currentItemId, setCurrentItemId] = useState("");
+  //update the delete status
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const fetchAppointment = async () => {
     try {
@@ -49,6 +61,12 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
   useEffect(() => {
     fetchAppointment();
   }, [openStatus]);
+
+  useEffect(() => {
+    if (isDeleted) {
+      redirect?.();
+    }
+  }, [modalOpenStatus]);
 
   const appointmentProps: DescriptionsProps["items"] = [
     {
@@ -117,9 +135,9 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
       key: "3",
       label: (
         <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.aliyun.com"
+          onClick={() => {
+            deleteBtnHandler();
+          }}
         >
           Delete
         </a>
@@ -127,6 +145,28 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
       danger: true,
     },
   ];
+
+  const setDeleted = () => {
+    setIsDeleted(true);
+  };
+
+  const deleteBtnHandler = () => {
+    setModalTitle("Delete Confirmation");
+    if (appointment) {
+      setModalText(`Confirm to delete ${appointment.customer}'s appointment?`);
+      setCurrentItemId(appointment.id);
+    }
+
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+  };
 
   return (
     <div className="ml-4 mb-4 py-4 px-5 bg-white shadow-lg rounded-lg overflow-y-auto overflow-hidden">
@@ -158,6 +198,15 @@ const AppointmentDetail = ({ appointmentId }: Props) => {
           fieldsValue={appointment}
         />
       )}
+      <AsyncModal
+        modalOpenStatus={modalOpenStatus}
+        closeModal={closeModal}
+        modalTitle={modalTitle}
+        modalText={modalText}
+        endpoint="appointments"
+        itemId={currentItemId}
+        setDeleted={setDeleted}
+      />
     </div>
   );
 };
