@@ -93,7 +93,7 @@ const ServicesPage = () => {
 
   useEffect(() => {
     getServices();
-  }, [modalOpenStatus]);
+  }, []);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -153,6 +153,7 @@ const ServicesPage = () => {
         modalText={modalText}
         endpoint="services"
         itemId={currentItemId}
+        setDeleted={getServices}
       />
     </div>
   );

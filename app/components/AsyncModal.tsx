@@ -26,9 +26,10 @@ const AsyncModal = ({
   const handleOk = () => {
     setConfirmLoading(true);
     try {
-      deleteData(`${endpoint}/${itemId}`);
-      setDeleted ? setDeleted() : "";
-      closeModal();
+      deleteData(`${endpoint}/${itemId}`).then(() => {
+        setDeleted ? setDeleted() : "";
+        closeModal();
+      });
     } catch (error) {
       console.error(error);
     }

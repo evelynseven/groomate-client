@@ -93,7 +93,7 @@ const BreedsPage = () => {
 
   useEffect(() => {
     getBreeds();
-  }, [modalOpenStatus]);
+  }, []);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -153,6 +153,7 @@ const BreedsPage = () => {
         modalText={modalText}
         endpoint="breeds"
         itemId={currentItemId}
+        setDeleted={getBreeds}
       />
     </div>
   );

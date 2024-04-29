@@ -99,7 +99,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     getUsers();
-  }, [modalOpenStatus]);
+  }, []);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -159,6 +159,7 @@ const UsersPage = () => {
         modalText={modalText}
         endpoint="users"
         itemId={currentItemId}
+        setDeleted={getUsers}
       />
     </div>
   );

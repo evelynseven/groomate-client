@@ -93,7 +93,7 @@ const AddonsPage = () => {
 
   useEffect(() => {
     getAddons();
-  }, [modalOpenStatus]);
+  }, []);
 
   const showDrawer = () => {
     setOpenStatus(true);
@@ -153,6 +153,7 @@ const AddonsPage = () => {
         modalText={modalText}
         endpoint="addons"
         itemId={currentItemId}
+        setDeleted={getAddons}
       />
     </div>
   );
