@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import NavBar from "./NavBar";
+import { jwtDecode } from "jwt-decode";
 
 interface Props {
   children: ReactNode;
@@ -33,6 +34,13 @@ const AdminLayout = ({ children }: Props) => {
     } as MenuItem;
   }
 
+  const access_token = sessionStorage.getItem("access_token");
+  let userRole = "";
+  if (access_token) {
+    const decoded = jwtDecode(access_token) as { role: string };
+    userRole = decoded.role;
+  }
+
   const items: MenuProps["items"] = [
     getItem("Dashboard", "dashboard", <DashboardOutlined />),
     getItem("Customers", "customers", <SmileOutlined />),
@@ -40,12 +48,14 @@ const AdminLayout = ({ children }: Props) => {
 
     { type: "divider" },
 
-    getItem("Settings", "settings", <SettingOutlined />, [
-      getItem("Services", "settings/services"),
-      getItem("Add-ons", "settings/addons"),
-      getItem("Breeds", "settings/breeds"),
-      getItem("Users", "settings/users"),
-    ]),
+    userRole !== "ASSOCIATE"
+      ? getItem("Settings", "settings", <SettingOutlined />, [
+          getItem("Services", "settings/services"),
+          getItem("Add-ons", "settings/addons"),
+          getItem("Breeds", "settings/breeds"),
+          getItem("Users", "settings/users"),
+        ])
+      : null,
   ];
 
   const router = useRouter();

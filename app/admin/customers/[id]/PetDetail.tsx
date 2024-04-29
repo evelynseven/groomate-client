@@ -10,6 +10,7 @@ import type { TabsProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import EditPet from "./EditPet";
 import AsyncModal from "@/app/components/AsyncModal";
+import { jwtDecode } from "jwt-decode";
 
 interface Props {
   customerId: string;
@@ -30,6 +31,13 @@ interface Pet {
 }
 
 const PetDetail = ({ customerId }: Props) => {
+  const access_token = sessionStorage.getItem("access_token");
+  let userRole = "";
+  if (access_token) {
+    const decoded = jwtDecode(access_token) as { role: string };
+    userRole = decoded.role;
+  }
+
   const [petList, setPetList] = useState<Pet[]>();
   const [selectedPetId, setSelectedPetId] = useState("");
   const [pet, setPet] = useState<Pet>();
@@ -196,13 +204,18 @@ const PetDetail = ({ customerId }: Props) => {
     {
       key: "3",
       label: (
-        <a
+        <Button
+          type="link"
+          danger
+          disabled={userRole === "ADMIN" ? false : true}
+          className="p-0"
+          size="small"
           onClick={() => {
             deleteBtnHandler();
           }}
         >
           Delete
-        </a>
+        </Button>
       ),
       danger: true,
     },

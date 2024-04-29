@@ -136,12 +136,12 @@ const UsersPage = () => {
 
           <Button
             type="link"
-            onClick={() => {
-              deleteBtnHandler(record);
-            }}
             danger
             disabled={userRole === "ADMIN" ? false : true}
             className="px-0"
+            onClick={() => {
+              deleteBtnHandler(record);
+            }}
           >
             Delete
           </Button>
@@ -154,7 +154,12 @@ const UsersPage = () => {
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Users" />
-        <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
+        <Button
+          type="primary"
+          onClick={addBtnHandler}
+          icon={<PlusOutlined />}
+          disabled={userRole === "ADMIN" ? false : true}
+        >
           New
         </Button>
         <EditUser
