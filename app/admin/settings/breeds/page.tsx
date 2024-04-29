@@ -164,7 +164,7 @@ const BreedsPage = () => {
         modalText={modalText}
         endpoint="breeds"
         itemId={currentItemId}
-        setDeleted={getBreeds}
+        postAction={getBreeds}
       />
     </div>
   );

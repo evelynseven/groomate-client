@@ -256,7 +256,7 @@ const PetDetail = ({ customerId }: Props) => {
         modalText={modalText}
         endpoint={`customers/${customerId}/pets`}
         itemId={currentItemId}
-        setDeleted={setDeleted}
+        postAction={setDeleted}
       />
     </div>
   );

@@ -164,7 +164,7 @@ const AddonsPage = () => {
         modalText={modalText}
         endpoint="addons"
         itemId={currentItemId}
-        setDeleted={getAddons}
+        postAction={getAddons}
       />
     </div>
   );

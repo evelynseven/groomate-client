@@ -196,7 +196,7 @@ const CustomerDetail = ({ customerId, redirect, showDelete = true }: Props) => {
         modalText={modalText}
         endpoint="customers"
         itemId={currentItemId}
-        setDeleted={setDeleted}
+        postAction={setDeleted}
       />
     </div>
   );

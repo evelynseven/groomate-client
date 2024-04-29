@@ -178,7 +178,7 @@ const UsersPage = () => {
         modalText={modalText}
         endpoint="users"
         itemId={currentItemId}
-        setDeleted={getUsers}
+        postAction={getUsers}
       />
     </div>
   );

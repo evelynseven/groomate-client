@@ -164,7 +164,7 @@ const ServicesPage = () => {
         modalText={modalText}
         endpoint="services"
         itemId={currentItemId}
-        setDeleted={getServices}
+        postAction={getServices}
       />
     </div>
   );
