@@ -2,7 +2,6 @@ import React from "react";
 import { SettingOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "./groomate-logo-transparent.png";
 
 const NavBar = () => {
   return (

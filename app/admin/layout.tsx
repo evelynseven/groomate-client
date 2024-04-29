@@ -9,6 +9,7 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import NavBar from "./NavBar";
 
 interface Props {
   children: ReactNode;
@@ -54,17 +55,21 @@ const AdminLayout = ({ children }: Props) => {
   };
 
   return (
-    <div className="flex h-dvh pt-[66px]">
-      <Menu
-        onClick={onClick}
-        style={{ width: 220 }}
-        defaultSelectedKeys={["dashboard"]}
-        defaultOpenKeys={["dashboard"]}
-        mode="inline"
-        items={items}
-      />
-      <div className="w-full p-5 bg-slate-50">{children}</div>
-    </div>
+    <>
+      <NavBar />
+
+      <div className="flex h-dvh pt-[66px]">
+        <Menu
+          onClick={onClick}
+          style={{ width: 220 }}
+          defaultSelectedKeys={["dashboard"]}
+          defaultOpenKeys={["dashboard"]}
+          mode="inline"
+          items={items}
+        />
+        <div className="w-full p-5 bg-slate-50">{children}</div>
+      </div>
+    </>
   );
 };
 
