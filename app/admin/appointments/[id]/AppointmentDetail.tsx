@@ -55,6 +55,10 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
   const [currentItemId, setCurrentItemId] = useState("");
   //update the delete status
   const [isDeleted, setIsDeleted] = useState(false);
+  //update button text
+  const [primaryButtonText, setPrimaryButtonText] = useState("");
+  const [secondaryButtonText, setSecondaryButtonText] = useState("");
+  const [cancelButtonText, setCancelButtonText] = useState("Cancel");
 
   const fetchAppointment = async () => {
     try {
@@ -67,7 +71,23 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
 
   useEffect(() => {
     fetchAppointment();
-  }, [openStatus]);
+  }, []);
+
+  useEffect(() => {
+    if (appointment?.status === "INCOMING") {
+      setPrimaryButtonText("Check In");
+    }
+    if (appointment?.status === "CHECKED_IN") {
+      setPrimaryButtonText("Check Out");
+      setSecondaryButtonText("Uncheckin");
+    }
+    if (
+      appointment?.status === "CHECKED_OUT" ||
+      appointment?.status === "CANCELLED"
+    ) {
+      setCancelButtonText("");
+    }
+  }, [appointment]);
 
   useEffect(() => {
     if (isDeleted) {
@@ -121,11 +141,6 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
     setOpenStatus(false);
   };
 
-  const addBtnHandler = () => {
-    setDrawerType("Create");
-    showDrawer();
-  };
-
   const editBtnHandler = () => {
     setDrawerType("Edit");
     if (appointment) {
@@ -133,13 +148,89 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
     }
   };
 
+  const postAction = () => {
+    if (modalTitle === "Delete Confirmation") {
+      setIsDeleted(true);
+    }
+
+    if (modalTitle === "Checkin Confirmation") {
+      setSecondaryButtonText("Uncheckin");
+    }
+  };
+
+  const deleteBtnHandler = () => {
+    setModalTitle("Delete Confirmation");
+    setModalText(`Confirm to delete ${appointment?.customer}'s appointment?`);
+    if (appointment) {
+      setCurrentItemId(appointment.id);
+    }
+    showModal();
+  };
+
+  const showModal = () => {
+    setModalOpenStatus(true);
+  };
+
+  const closeModal = () => {
+    setModalOpenStatus(false);
+    fetchAppointment();
+  };
+
+  const primaryBtnHandler = () => {
+    if (appointment) {
+      setCurrentItemId(appointment.id);
+    }
+    if (primaryButtonText === "Check In") {
+      setModalTitle("Checkin Confirmation");
+      setModalText(`Confirm to check in ${appointment?.pet}?`);
+    }
+
+    if (primaryButtonText === "Check Out") {
+      setModalTitle("Checkout Confirmation");
+      setModalText(`Confirm to check out ${appointment?.pet}?`);
+    }
+    showModal();
+  };
+
+  const secondaryBtnHandler = () => {
+    if (appointment) {
+      setCurrentItemId(appointment.id);
+    }
+    if (secondaryButtonText === "Uncheckin") {
+      setModalTitle("Uncheckin Confirmation");
+      setModalText(`Confirm to uncheck in ${appointment?.pet}?`);
+    }
+    showModal();
+  };
+
+  const cancelBtnHandler = () => {
+    if (appointment) {
+      setCurrentItemId(appointment.id);
+    }
+    setModalTitle("Cancel Confirmation");
+    setModalText(`Confirm to cancel ${appointment?.pet}'s appointment?`);
+    showModal();
+  };
+
   const items: MenuProps["items"] = [
     {
-      key: "2",
+      key: "1",
       label: <a onClick={editBtnHandler}>Edit</a>,
     },
+    appointment?.status === "CHECKED_IN"
+      ? {
+          key: "2",
+          label: <a onClick={secondaryBtnHandler}>{secondaryButtonText}</a>,
+        }
+      : null,
+    appointment?.status !== "CHECKED_OUT" && appointment?.status !== "CANCELLED"
+      ? {
+          key: "3",
+          label: <a onClick={cancelBtnHandler}>{cancelButtonText}</a>,
+        }
+      : null,
     {
-      key: "3",
+      key: "4",
       label: (
         <Button
           type="link"
@@ -158,28 +249,6 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
     },
   ];
 
-  const setDeleted = () => {
-    setIsDeleted(true);
-  };
-
-  const deleteBtnHandler = () => {
-    setModalTitle("Delete Confirmation");
-    if (appointment) {
-      setModalText(`Confirm to delete ${appointment.customer}'s appointment?`);
-      setCurrentItemId(appointment.id);
-    }
-
-    showModal();
-  };
-
-  const showModal = () => {
-    setModalOpenStatus(true);
-  };
-
-  const closeModal = () => {
-    setModalOpenStatus(false);
-  };
-
   return (
     <div className="ml-4 mb-4 py-4 px-5 bg-white shadow-lg rounded-lg overflow-y-auto overflow-hidden">
       <div className="flex justify-between items-center mb-2">
@@ -192,9 +261,16 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
           </p>
         </div>
         <div>
-          <Button type="primary" className="mr-2">
-            Check In
-          </Button>
+          {appointment?.status !== "CHECKED_OUT" &&
+            appointment?.status !== "CANCELLED" && (
+              <Button
+                type="primary"
+                className="mr-2"
+                onClick={primaryBtnHandler}
+              >
+                {primaryButtonText}
+              </Button>
+            )}
           <Dropdown menu={{ items }} placement="bottomRight" arrow>
             <Button icon={<MoreOutlined />} shape="circle"></Button>
           </Dropdown>
@@ -217,7 +293,7 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
         modalText={modalText}
         endpoint="appointments"
         itemId={currentItemId}
-        setDeleted={setDeleted}
+        postAction={postAction}
       />
     </div>
   );

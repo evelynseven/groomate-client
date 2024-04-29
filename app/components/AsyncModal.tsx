@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal } from "antd";
-import { deleteData } from "@/app/api/api";
+import { deleteData, putData } from "@/app/api/api";
 
 interface Props {
   modalOpenStatus: boolean;
@@ -9,7 +9,7 @@ interface Props {
   closeModal: () => void;
   endpoint: string;
   itemId: string;
-  setDeleted?: () => void;
+  postAction?: () => void;
 }
 
 const AsyncModal = ({
@@ -19,19 +19,62 @@ const AsyncModal = ({
   closeModal,
   endpoint,
   itemId,
-  setDeleted,
+  postAction,
 }: Props) => {
-  const [confirmLoading, setConfirmLoading] = useState(false);
-
   const handleOk = () => {
-    setConfirmLoading(true);
-    try {
-      deleteData(`${endpoint}/${itemId}`).then(() => {
-        setDeleted ? setDeleted() : "";
-        closeModal();
-      });
-    } catch (error) {
-      console.error(error);
+    if (modalTitle === "Delete Confirmation") {
+      try {
+        deleteData(`${endpoint}/${itemId}`).then(() => {
+          postAction?.();
+          closeModal();
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (modalTitle === "Checkin Confirmation") {
+      try {
+        putData(`${endpoint}/${itemId}/checkin`).then(() => {
+          postAction?.();
+          closeModal();
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (modalTitle === "Checkout Confirmation") {
+      try {
+        putData(`${endpoint}/${itemId}/checkout`).then(() => {
+          postAction?.();
+          closeModal();
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (modalTitle === "Uncheckin Confirmation") {
+      try {
+        putData(`${endpoint}/${itemId}/uncheckin`).then(() => {
+          postAction?.();
+          closeModal();
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    if (modalTitle === "Cancel Confirmation") {
+      try {
+        putData(`${endpoint}/${itemId}/cancel`).then(() => {
+          postAction?.();
+          closeModal();
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -45,7 +88,6 @@ const AsyncModal = ({
         title={modalTitle}
         open={modalOpenStatus}
         onOk={handleOk}
-        confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
         <p>{modalText}</p>
