@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Menu } from "antd";
 import type { MenuProps } from "antd";
 import {
@@ -11,12 +11,20 @@ import {
 import { useRouter } from "next/navigation";
 import NavBar from "./NavBar";
 import { jwtDecode } from "jwt-decode";
+import { usePathname } from "next/navigation";
 
 interface Props {
   children: ReactNode;
 }
 
 const AdminLayout = ({ children }: Props) => {
+  const pathname = usePathname();
+  const [path, setPath] = useState("");
+
+  useEffect(() => {
+    setPath(pathname);
+  }, []);
+
   type MenuItem = Required<MenuProps>["items"][number];
   function getItem(
     label: React.ReactNode,
@@ -69,14 +77,16 @@ const AdminLayout = ({ children }: Props) => {
       <NavBar />
 
       <div className="flex h-dvh pt-[66px]">
-        <Menu
-          onClick={onClick}
-          style={{ width: 220 }}
-          defaultSelectedKeys={["dashboard"]}
-          defaultOpenKeys={["dashboard"]}
-          mode="inline"
-          items={items}
-        />
+        {path !== "/admin/board" && (
+          <Menu
+            onClick={onClick}
+            style={{ width: 220 }}
+            defaultSelectedKeys={["dashboard"]}
+            defaultOpenKeys={["dashboard"]}
+            mode="inline"
+            items={items}
+          />
+        )}
         <div className="w-full p-5 bg-slate-50">{children}</div>
       </div>
     </>

@@ -29,7 +29,7 @@ const NavBar = () => {
   return (
     <div className="navbar bg-base-100 fixed top-0 left-0 right-0 z-10">
       <div className="flex-1">
-        <Link href="/" className="btn btn-ghost text-xl">
+        <Link href="/admin/board" className="btn btn-ghost text-xl">
           <Image
             src="/groomate-logo-transparent.png"
             width={150}
