@@ -20,9 +20,15 @@ interface Props {
 const AdminLayout = ({ children }: Props) => {
   const pathname = usePathname();
   const [path, setPath] = useState("");
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     setPath(pathname);
+    const access_token = sessionStorage.getItem("access_token");
+    if (access_token) {
+      const decoded = jwtDecode(access_token) as { role: string };
+      setUserRole(decoded.role);
+    }
   }, [pathname]);
 
   type MenuItem = Required<MenuProps>["items"][number];
@@ -40,13 +46,6 @@ const AdminLayout = ({ children }: Props) => {
       label,
       type,
     } as MenuItem;
-  }
-
-  const access_token = sessionStorage.getItem("access_token");
-  let userRole = "";
-  if (access_token) {
-    const decoded = jwtDecode(access_token) as { role: string };
-    userRole = decoded.role;
   }
 
   const items: MenuProps["items"] = [

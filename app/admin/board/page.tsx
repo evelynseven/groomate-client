@@ -1,7 +1,12 @@
 import React from "react";
+import ScheduleBoard from "./ScheduleBoard";
 
 const BoardPage = () => {
-  return <div>BoardPage</div>;
+  return (
+    <div>
+      <ScheduleBoard />
+    </div>
+  );
 };
 
 export default BoardPage;
