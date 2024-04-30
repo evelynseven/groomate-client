@@ -191,10 +191,11 @@ const EditDrawer: React.FC<Props> = ({
               >
                 <Select
                   placeholder="Please select breed type"
+                  defaultValue="DOG"
                   onChange={setType}
                 >
                   <Option value="DOG">Dog</Option>
-                  <Option value="CAT">Cat</Option>
+                  {/* <Option value="CAT">Cat</Option> */}
                 </Select>
               </Form.Item>
             </Col>

@@ -113,9 +113,12 @@ const EditDrawer: React.FC<Props> = ({
                   { required: true, message: "Please select breed type" },
                 ]}
               >
-                <Select placeholder="Please select breed type">
+                <Select
+                  placeholder="Please select breed type"
+                  defaultValue="DOG"
+                >
                   <Option value="DOG">Dog</Option>
-                  <Option value="CAT">Cat</Option>
+                  {/* <Option value="CAT">Cat</Option> */}
                 </Select>
               </Form.Item>
             </Col>

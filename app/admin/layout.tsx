@@ -23,7 +23,7 @@ const AdminLayout = ({ children }: Props) => {
 
   useEffect(() => {
     setPath(pathname);
-  }, []);
+  }, [pathname]);
 
   type MenuItem = Required<MenuProps>["items"][number];
   function getItem(
