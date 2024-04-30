@@ -56,7 +56,6 @@ const EditDrawer: React.FC<Props> = ({
           email: values.email,
           remarks: values.remarks,
         };
-        console.log(customer);
 
         postData("customers", customer).then(() => {
           closeDrawer();
@@ -80,8 +79,6 @@ const EditDrawer: React.FC<Props> = ({
             email: values.email,
             remarks: values.remarks,
           };
-
-          console.log(customer);
 
           putData(`customers/${fieldsValue.id}`, customer).then(() => {
             closeDrawer();

@@ -63,6 +63,7 @@ const EditDrawer: React.FC<Props> = ({
   };
 
   const setType = (type: string) => {
+    form.setFieldValue("type", type);
     newPet.type = type;
   };
 
@@ -100,6 +101,7 @@ const EditDrawer: React.FC<Props> = ({
         newPet.weight = values.weight;
         newPet.remarks = values.remarks;
         newPet.breedId = values.breed;
+        // newPet.type = values.type;
 
         postData(`customers/${customerId}/pets`, newPet).then(() => {
           closeDrawer();
@@ -191,7 +193,6 @@ const EditDrawer: React.FC<Props> = ({
               >
                 <Select
                   placeholder="Please select breed type"
-                  defaultValue="DOG"
                   onChange={setType}
                 >
                   <Option value="DOG">Dog</Option>

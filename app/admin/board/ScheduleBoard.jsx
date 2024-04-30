@@ -57,7 +57,7 @@ const SchedulerBoard = () => {
           users.map((user) => ({
             text: user.fullName,
             id: user.id,
-            color: teal,
+            color: indigo,
           }))
         );
       } catch (error) {
@@ -68,60 +68,6 @@ const SchedulerBoard = () => {
     fetchUses();
   }, []);
 
-  const appointments = [
-    {
-      id: 0,
-      title: "Watercolor Landscape",
-      members: [1],
-      // roomId: 1,
-      startDate: new Date(2024, 4, 30, 9, 30),
-      endDate: new Date(2024, 4, 30, 12, 0),
-    },
-    {
-      id: 1,
-      title: "Oil Painting for Beginners",
-      members: [2],
-      // roomId: 2,
-      startDate: new Date(2017, 4, 28, 12, 30),
-      endDate: new Date(2017, 4, 28, 14, 30),
-    },
-    {
-      id: 2,
-      title: "Testing",
-      members: [2],
-      // roomId: 1,
-      startDate: new Date(2017, 4, 29, 12, 30),
-      endDate: new Date(2017, 4, 29, 14, 30),
-    },
-    {
-      id: 3,
-      title: "Final exams",
-      members: [2],
-      // roomId: 2,
-      startDate: new Date(2017, 4, 29, 9, 30),
-      endDate: new Date(2017, 4, 29, 12, 0),
-    },
-  ];
-
-  const owners = [
-    {
-      text: "Andrew Glover",
-      id: 1,
-      color: teal,
-    },
-    {
-      text: "Arnie Schwartz",
-      id: 2,
-      color: indigo,
-    },
-  ];
-
-  // const locations = [
-  //   { text: "Room 1", id: 1 },
-  //   { text: "Room 2", id: 2 },
-  // ];
-
-  // const [data, setData] = useState(appointments);
   const [data, setData] = useState();
   const [resources, setResources] = useState();
   const [grouping] = useState([
@@ -134,7 +80,6 @@ const SchedulerBoard = () => {
 
   useEffect(() => {
     if (appoints && users) {
-      console.log(appoints);
       setData(appoints);
       setResources([
         {
@@ -167,26 +112,12 @@ const SchedulerBoard = () => {
     }
   }, [appoints, users]);
 
-  // const [resources] = useState([
-  //   {
-  //     fieldName: "members",
-  //     title: "Members",
-  //     instances: owners,
-  //     allowMultiple: true,
-  //   },
-  //   // {
-  //   //   fieldName: "roomId",
-  //   //   title: "Location",
-  //   //   instances: locations,
-  //   // },
-  // ]);
-
   return (
     data &&
     users && (
       <Paper>
         <Scheduler data={data}>
-          <ViewState defaultCurrentDate="2017-05-28" />
+          <ViewState />
           <EditingState onCommitChanges={commitChanges} />
           <GroupingState grouping={grouping} groupByDate={isGroupByDate} />
 
