@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/charts": "^2.1.0",
     "@devexpress/dx-react-core": "^4.0.8",
     "@devexpress/dx-react-scheduler": "^4.0.8",
     "@devexpress/dx-react-scheduler-material-ui": "^4.0.8",
@@ -17,13 +18,15 @@
     "@mui/material": "^5.15.15",
     "@nestjs/jwt": "^10.2.0",
     "axios": "^1.6.8",
+    "chart.js": "2.9.3",
     "jwt-decode": "^4.0.0",
-    "next": "14.2.2",
+    "next": "^14.2.3",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@types/chart.js": "^2.9.41",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

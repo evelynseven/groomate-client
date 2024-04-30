@@ -101,7 +101,6 @@ const EditDrawer: React.FC<Props> = ({
         newPet.weight = values.weight;
         newPet.remarks = values.remarks;
         newPet.breedId = values.breed;
-        // newPet.type = values.type;
 
         postData(`customers/${customerId}/pets`, newPet).then(() => {
           closeDrawer();

@@ -1,7 +1,12 @@
 import React from "react";
+import CardBarChart from "./DashBoard";
 
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      <CardBarChart />
+    </div>
+  );
 };
 
 export default Dashboard;
