@@ -3,7 +3,7 @@ import CardBarChart from "./DashBoard";
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="h-full">
       <CardBarChart />
     </div>
   );

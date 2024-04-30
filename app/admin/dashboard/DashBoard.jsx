@@ -37,8 +37,8 @@ export default function CardBarChart() {
         datasets: [
           {
             label: formattedLabel,
-            backgroundColor: "#3182ce",
-            borderColor: "#3182ce",
+            backgroundColor: "#3875f6",
+            borderColor: "#3875f6",
             data: [30, 78, 56, 34, 100, 45, 13],
             fill: false,
             barThickness: 8,
@@ -126,7 +126,7 @@ export default function CardBarChart() {
         </div>
         <div className="p-4 flex-auto">
           {/* Chart */}
-          <div className="relative h-350-px">
+          <div className="relative h-96">
             <canvas id="bar-chart"></canvas>
           </div>
         </div>
