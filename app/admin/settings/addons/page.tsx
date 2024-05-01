@@ -18,12 +18,7 @@ interface Addon {
 }
 
 const AddonsPage = () => {
-  const access_token = sessionStorage.getItem("access_token");
-  let userRole = "";
-  if (access_token) {
-    const decoded = jwtDecode(access_token) as { role: string };
-    userRole = decoded.role;
-  }
+  const [userRole, setUserRole] = useState("");
 
   //control the table data
   const [addons, setAddons] = useState<Addon[]>([]);
@@ -53,6 +48,11 @@ const AddonsPage = () => {
 
   useEffect(() => {
     getAddons();
+    const access_token = sessionStorage.getItem("access_token");
+    if (access_token) {
+      const decoded = jwtDecode(access_token) as { role: string };
+      setUserRole(decoded.role);
+    }
   }, []);
 
   const showDrawer = () => {

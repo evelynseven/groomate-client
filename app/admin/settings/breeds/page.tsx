@@ -18,12 +18,7 @@ interface Breed {
 }
 
 const BreedsPage = () => {
-  const access_token = sessionStorage.getItem("access_token");
-  let userRole = "";
-  if (access_token) {
-    const decoded = jwtDecode(access_token) as { role: string };
-    userRole = decoded.role;
-  }
+  const [userRole, setUserRole] = useState("");
 
   //control the table data
   const [breeds, setBreeds] = useState<Breed[]>([]);
@@ -53,6 +48,12 @@ const BreedsPage = () => {
 
   useEffect(() => {
     getBreeds();
+    const access_token = sessionStorage.getItem("access_token");
+    let userRole = "";
+    if (access_token) {
+      const decoded = jwtDecode(access_token) as { role: string };
+      userRole = decoded.role;
+    }
   }, []);
 
   const showDrawer = () => {

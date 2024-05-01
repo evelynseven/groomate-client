@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 const LoginPage: React.FC = () => {
   const router = useRouter();
   const redirect = () => {
-    router.replace("/admin/customers");
+    router.replace("/admin/board");
   };
   useEffect(() => {
     const access_token = sessionStorage.getItem("access_token");
