@@ -49,7 +49,7 @@ const AdminLayout = ({ children }: Props) => {
   }
 
   const items: MenuProps["items"] = [
-    getItem("Dashboard", "dashboard", <DashboardOutlined />),
+    // getItem("Dashboard", "dashboard", <DashboardOutlined />),
     getItem("Customers", "customers", <SmileOutlined />),
     getItem("Appointments", "appointments", <CalendarOutlined />),
 
@@ -80,8 +80,8 @@ const AdminLayout = ({ children }: Props) => {
           <Menu
             onClick={onClick}
             style={{ width: 220 }}
-            defaultSelectedKeys={["dashboard"]}
-            defaultOpenKeys={["dashboard"]}
+            defaultSelectedKeys={["customers"]}
+            defaultOpenKeys={["settings"]}
             mode="inline"
             items={items}
           />

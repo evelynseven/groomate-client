@@ -64,7 +64,7 @@ const NavBar = () => {
         </div>
 
         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-          <Link href="/admin/dashboard">
+          <Link href="/admin/customers">
             <SettingOutlined />
           </Link>
         </div>
