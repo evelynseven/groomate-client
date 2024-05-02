@@ -2,8 +2,7 @@
 
 import axios from "axios";
 
-const baseUrl = process.env.baseUrl;
-console.log(baseUrl);
+const baseUrl = "/api";
 
 const fetchData = async (endpoint: string) => {
   const accessToken = sessionStorage.getItem("access_token");
