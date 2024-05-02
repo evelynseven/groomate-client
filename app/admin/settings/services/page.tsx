@@ -49,10 +49,9 @@ const ServicesPage = () => {
   useEffect(() => {
     getServices();
     const access_token = sessionStorage.getItem("access_token");
-    let userRole = "";
     if (access_token) {
       const decoded = jwtDecode(access_token) as { role: string };
-      userRole = decoded.role;
+      setUserRole(decoded.role);
     }
   }, []);
 
