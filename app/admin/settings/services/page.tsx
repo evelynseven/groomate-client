@@ -145,7 +145,12 @@ const ServicesPage = () => {
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
         <TableHeader PageName="Services" />
-        <Button type="primary" onClick={addBtnHandler} icon={<PlusOutlined />}>
+        <Button
+          type="primary"
+          onClick={addBtnHandler}
+          icon={<PlusOutlined />}
+          disabled={userRole === "ADMIN" ? false : true}
+        >
           New
         </Button>
         <EditService
