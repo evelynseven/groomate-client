@@ -21,7 +21,7 @@ import {
   DragDropProvider,
   AppointmentForm,
 } from "@devexpress/dx-react-scheduler-material-ui";
-import { teal, indigo } from "@mui/material/colors";
+import { indigo } from "@mui/material/colors";
 import { fetchData } from "@/app/api/api";
 
 const SchedulerBoard = () => {
@@ -38,7 +38,7 @@ const SchedulerBoard = () => {
         setAppoints(
           appointments.map((appoint) => ({
             id: appoint.id,
-            title: appoint.baseService,
+            title: `${appoint.pet} | ${appoint.baseService}`,
             members: [appoint.associateId],
             startDate: new Date(appoint.appointmentTime),
             endDate: new Date(

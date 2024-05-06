@@ -100,12 +100,6 @@ const AppointmentsPage = () => {
     showDrawer();
   };
 
-  const editBtnHandler = (record: Appointment) => {
-    setDrawerType("Edit");
-    setFieldsValue(record);
-    showDrawer();
-  };
-
   return (
     <div className="h-full p-5 bg-white shadow-lg rounded-lg">
       <div className="mb-4 flex justify-between">
