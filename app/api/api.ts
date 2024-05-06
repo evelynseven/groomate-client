@@ -26,12 +26,22 @@ const fetchData = async (endpoint: string) => {
 const postData = async (endpoint: string, data: object) => {
   const accessToken = sessionStorage.getItem("access_token");
 
+  if (accessToken) {
+    try {
+      const response = await axios.post(`${baseUrl}/${endpoint}`, data, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const item = await response.data;
+      return item;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   try {
-    const response = await axios.post(`${baseUrl}/${endpoint}`, data, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await axios.post(`${baseUrl}/${endpoint}`, data);
     const item = await response.data;
     return item;
   } catch (error) {
@@ -54,23 +64,6 @@ const putData = async (endpoint: string, data?: object) => {
     console.error(error);
   }
 };
-
-// const patchData = async (endpoint: string) => {
-//   const accessToken = sessionStorage.getItem("access_token");
-//   console.log(accessToken);
-
-//   try {
-//     const response = await axios.patch(`${baseUrl}/${endpoint}`, {
-//       headers: {
-//         Authorization: `Bearer ${accessToken}`,
-//       },
-//     });
-//     const item = await response.data;
-//     return item;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
 
 const deleteData = async (endpoint: string) => {
   const accessToken = sessionStorage.getItem("access_token");
