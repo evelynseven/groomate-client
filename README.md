@@ -43,32 +43,59 @@ Groomate is a pet salon management system designed to streamline the daily opera
 ## Screeshots
 
 ![](/screenshots/login.png)
+
 ![](/screenshots/salon-appointments-board.png)
+
 ![](/screenshots/admin-customers-list.png)
+
 ![](/screenshots/admin-customers-list-ASSOCIATE-ROLE.png)
 (Associates are not able to see settings section)
+
 ![](/screenshots/admin-customers-list-create-new-customer.png)
+
 ![](/screenshots/admin-customer-detail.png)
+
 ![](/screenshots/admin-customer-detail-edit-customer.png)
+
 ![](/screenshots/admin-customer-detail-edit-pet.png)
+
 ![](/screenshots/admin-customer-detail-ASSOCIATE&MANAGER-ROLE.png)
 (Managers and associates are not able to delete customers, pets and appointments)
+
 ![](/screenshots/admin-appointments-list.png)
+
 ![](/screenshots/admin-appointments-list-add-appointment.png)
+
 ![](/screenshots/admin-appointment-detail.png)
+
 ![](/screenshots/admin-appointment-detail-edit-appointment.png)
+
 ![](/screenshots/admin-settings-addons-list.png)
+
 ![](/screenshots/admin-settings-addons-list-add-addon.png)
+
 ![](/screenshots/admin-settings-addons-list-edit-addon.png)
+
 ![](/screenshots/admin-settings-services-list.png)
+
 ![](/screenshots/admin-settings-services-list-add-service.png)
+
 ![](/screenshots/admin-settings-services-list-edit-service.png)
+
 ![](/screenshots/admin-settings-breeds-list.png)
+
 ![](/screenshots/admin-settings-breeds-list-add-breed.png)
+
 ![](/screenshots/admin-settings-breeds-list-edit-breed.png)
+
 ![](/screenshots/admin-settings-users-list-MANAGER-ROLE.png)
 (Managers cannot add or delete users)
+
 ![](/screenshots/admin-settings-users-list-ADMIN-ROLE.png)
 (Only system admins can edit, add or delete users)
+
 ![](/screenshots/admin-settings-users-list-add-user-ADMIN-ROLE.png)
+
 ![](/screenshots/admin-settings-users-list-edit-user-ADMIN-ROLE.png)
+
+![](/screenshots/admin-double-confirmation-modal.png)
