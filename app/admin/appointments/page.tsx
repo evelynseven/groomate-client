@@ -15,6 +15,7 @@ interface Appointment {
   petId: string;
   customerId: string;
   associateId: string;
+  status: string;
   totalPrice: number;
   duration: number;
   remarks: string;
@@ -50,6 +51,41 @@ const AppointmentsPage = () => {
       title: "Customer",
       dataIndex: "customer",
       key: "customer",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (text: string) => {
+        let status = "";
+        let statusTag = "";
+        if (text === "INCOMING") {
+          status = "Incoming";
+          statusTag =
+            "bg-orange-100 text-orange-500 font-semibold rounded-full px-2 py-1";
+        }
+        if (text === "CHECKED_IN") {
+          status = "Checked In";
+          statusTag =
+            "bg-sky-100 text-sky-600 font-semibold rounded-full px-2 py-1";
+        }
+        if (text === "CHECKED_OUT") {
+          status = "Checked Out";
+          statusTag =
+            "bg-green-100 text-green-600 font-semibold rounded-full px-2 py-1";
+        }
+        if (text === "CANCELLED") {
+          status = "Cancelled";
+          statusTag =
+            "bg-rose-100 text-rose-500 font-semibold rounded-full px-2 py-1";
+        }
+
+        return (
+          <div className="flex">
+            <p className={statusTag}>{status}</p>
+          </div>
+        );
+      },
     },
     {
       title: "Associate",

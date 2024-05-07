@@ -46,9 +46,26 @@ const AppointmentCard = ({ appointment }: Props) => (
 
       <div className="flex justify-between">
         <p className="text-slate-500">{appointment.associate}</p>
-        <p className="text-slate-500 bg-sky-100 rounded-full text-xs p-1 px-2">
-          {appointment.status}
-        </p>
+        {appointment.status === "INCOMING" && (
+          <p className="text-orange-500 bg-orange-100 font-semibold rounded-full text-xs p-1 px-2">
+            Incoming
+          </p>
+        )}
+        {appointment.status === "CHECKED_IN" && (
+          <p className="text-sky-600 bg-sky-100 font-semibold rounded-full text-xs p-1 px-2">
+            Checked In
+          </p>
+        )}
+        {appointment.status === "CHECKED_OUT" && (
+          <p className="text-green-600 bg-green-100 font-semibold rounded-full text-xs p-1 px-2">
+            Checked Out
+          </p>
+        )}
+        {appointment.status === "CANCELLED" && (
+          <p className="text-rose-500 bg-rose-100 font-semibold rounded-full text-xs p-1 px-2">
+            Cancelled
+          </p>
+        )}
       </div>
     </Card>
   </Link>

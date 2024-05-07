@@ -256,9 +256,26 @@ const AppointmentDetail = ({ appointmentId, redirect }: Props) => {
           <p className="font-semibold text-xl mr-2">
             {appointment?.baseService}
           </p>
-          <p className="bg-sky-100 font-semibold rounded-full text-sm text-sky-600 p-1 px-2">
-            {appointment?.status}
-          </p>
+          {appointment?.status === "INCOMING" && (
+            <p className="text-orange-500 bg-orange-100 font-semibold rounded-full text-sm p-1 px-2">
+              Incoming
+            </p>
+          )}
+          {appointment?.status === "CHECKED_IN" && (
+            <p className="bg-sky-100 font-semibold rounded-full text-sm text-sky-600 p-1 px-2">
+              Checked In
+            </p>
+          )}
+          {appointment?.status === "CHECKED_OUT" && (
+            <p className="text-green-600 bg-green-100 font-semibold rounded-full text-sm p-1 px-2">
+              Checked Out
+            </p>
+          )}
+          {appointment?.status === "CANCELLED" && (
+            <p className="text-rose-500 bg-rose-100 font-semibold rounded-full text-sm p-1 px-2">
+              Cancelled
+            </p>
+          )}
         </div>
         <div>
           {appointment?.status !== "CHECKED_OUT" &&
