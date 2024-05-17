@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { postData, putData } from "../../api/api";
+import { postData, putData } from "../../../api/api";
 import { Button, Col, Drawer, Form, Input, Row, Select, Space } from "antd";
 
 interface Props {

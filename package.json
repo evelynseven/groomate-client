@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@ant-design/charts": "^2.1.0",
@@ -28,15 +29,18 @@
   },
   "devDependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@testing-library/cypress": "^10.0.1",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.6",
     "@types/chart.js": "^2.9.41",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/testing-library__jest-dom": "^6.0.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/ui": "^1.6.0",
     "antd": "^5.16.4",
+    "cypress": "^13.9.0",
     "daisyui": "^4.10.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.2",

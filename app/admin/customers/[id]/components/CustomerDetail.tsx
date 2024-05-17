@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchData } from "../../../api/api";
+import { fetchData } from "../../../../api/api";
 import { Button, Descriptions, Dropdown } from "antd";
 import type { DescriptionsProps, MenuProps } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import EditCustomer from "../EditCustomer";
+import EditCustomer from "../../components/EditCustomer";
 import Link from "next/link";
 import AsyncModal from "@/app/components/AsyncModal";
 import { jwtDecode } from "jwt-decode";

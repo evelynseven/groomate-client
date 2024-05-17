@@ -3,9 +3,7 @@
 import axios from "axios";
 
 const baseUrl =
-  process.env.NODE_ENV == "production"
-    ? "http://10.0.0.244:3000"
-    : "http://localhost:3000";
+  process.env.NODE_ENV == "production" ? "/api" : "http://localhost:3000";
 
 const fetchData = async (endpoint: string) => {
   const accessToken = sessionStorage.getItem("access_token");

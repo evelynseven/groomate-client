@@ -5,7 +5,7 @@ import GenericTable from "@/app/components/GenericTable";
 import { fetchData } from "@/app/api/api";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import EditAppointment from "./EditAppointment";
+import EditAppointment from "./components/EditAppointment";
 import Link from "next/link";
 import dateFormatter from "@/app/utils/dateTimeFormatter/dateTimeFormatter";
 
