@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import CustomerDetail from "../../customers/[id]/CustomerDetail";
+import CustomerDetail from "../../customers/[id]/components/CustomerDetail";
 import { fetchData } from "@/app/api/api";
-import AppointmentDetail from "./AppointmentDetail";
-import SinglePetDetail from "./SinglePetDetail";
+import AppointmentDetail from "./components/AppointmentDetail";
+import SinglePetDetail from "./components/SinglePetDetail";
 import { useRouter } from "next/navigation";
 
 interface Props {

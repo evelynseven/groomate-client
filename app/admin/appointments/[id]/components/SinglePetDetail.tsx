@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchData } from "../../../api/api";
+import { fetchData } from "../../../../api/api";
 import { Button, Descriptions, Dropdown } from "antd";
 import type { DescriptionsProps, MenuProps } from "antd";
 import dateFormatter from "@/app/utils/dateFormatter/dateFormatter";
 import { MoreOutlined } from "@ant-design/icons";
-import EditPet from "../../customers/[id]/EditPet";
+import EditPet from "../../../customers/[id]/components/EditPet";
 
 interface Props {
   customerId: string;

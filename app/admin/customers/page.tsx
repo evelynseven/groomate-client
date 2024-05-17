@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { fetchData } from "../../api/api";
 import GenericTable from "@/app/components/GenericTable";
 import TableHeader from "@/app/components/TableHeader";
-import EditCustomer from "./EditCustomer";
+import EditCustomer from "./components/EditCustomer";
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Link from "next/link";

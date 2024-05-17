@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchData } from "../../../api/api";
+import { fetchData } from "../../../../api/api";
 import AppointmentCard from "./AppointmentCard";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import EditAppointment from "../../appointments/EditAppointment";
+import EditAppointment from "../../../appointments/components/EditAppointment";
 
 interface Props {
   customerId: string;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { postData, putData } from "../../../api/api";
+import { postData, putData } from "../../../../api/api";
 import {
   Button,
   Col,
@@ -12,7 +12,7 @@ import {
   Select,
   Space,
 } from "antd";
-import SearchSelect from "../../appointments/SearchSelect";
+import SearchSelect from "../../../appointments/components/SearchSelect";
 import dayjs from "dayjs";
 
 interface Props {

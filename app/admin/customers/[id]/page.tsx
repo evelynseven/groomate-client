@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import CustomerDetail from "./CustomerDetail";
-import PetDetail from "./PetDetail";
-import AppointmentList from "./AppointmentList";
+import CustomerDetail from "./components/CustomerDetail";
+import PetDetail from "./components/PetDetail";
+import AppointmentList from "./components/AppointmentList";
 import { useRouter } from "next/navigation";
 
 interface Props {

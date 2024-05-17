@@ -1,6 +1,7 @@
-import GenericTable from "../../app/components/GenericTable";
+import GenericTable from "../GenericTable";
 import { render, screen } from "@testing-library/react";
 import Link from "next/link";
+import { expect } from "vitest";
 
 describe("GenericTable", () => {
   Object.defineProperty(window, "matchMedia", {
